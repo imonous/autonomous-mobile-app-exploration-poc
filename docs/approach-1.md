@@ -81,4 +81,3 @@ This also aligns with how tool-use models work: receive structured state, pick a
 - **Action history**: visit counts on nodes, timestamps on edges, or a short `recentActions` list to help the LLM avoid loops.
 - **XML UI tree**: add a flat list of clickable elements with text + bounds as a secondary input if coordinate-based taps prove unreliable.
 - **Error handling / recovery**: handle taps that go nowhere, app crashes, transition-frame screenshots.
-- **Graph scaling**: for larger apps, selective graph serialization instead of always-in-context.

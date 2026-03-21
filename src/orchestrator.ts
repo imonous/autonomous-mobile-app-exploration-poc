@@ -1,143 +1,105 @@
-import { generateText, type LanguageModel } from "ai";
-import { createGraph, addNode, addEdge, serialize, type Graph } from "./graph.js";
-import { createSession, destroySession, takeScreenshot, tap, pressBack, scroll } from "./device.js";
-import { tools, SYSTEM_PROMPT, MODEL_PRICING } from "./llm.js";
+import { generateText, hasToolCall, stepCountIs, type LanguageModel } from "ai";
+import { createGraph, serialize, type Graph } from "./graph.js";
+import { createSession, destroySession, takeScreenshot } from "./device.js";
+import { createTools, DEVICE_TOOL_NAMES, SYSTEM_PROMPT, MODEL_PRICING } from "./llm.js";
 import { env } from "./env.js";
 import { writeFile, mkdir } from "node:fs/promises";
 
 interface ExploreOptions {
   maxSteps: number;
-  staleLimit: number;
   model: LanguageModel;
   modelId: string;
 }
 
-const GRAPH_TOOLS = new Set(["addNode", "addEdge"]);
-const DEVICE_TOOLS = new Set(["tap", "pressBack", "scroll", "exit"]);
-
-export async function explore({
-  maxSteps,
-  staleLimit,
-  model,
-  modelId,
-}: ExploreOptions): Promise<Graph> {
+export async function explore({ maxSteps, model, modelId }: ExploreOptions): Promise<Graph> {
   const pricing = MODEL_PRICING[modelId] as
     | { inputPerMToken: number; outputPerMToken: number }
     | undefined;
   const browser = await createSession(env.APPIUM_URL);
   const graph = createGraph();
+  const tools = createTools(graph, browser);
 
   let step = 0;
-  let staleCount = 0;
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
   let lastAction: string | null = null;
   let screenshot = await takeScreenshot(browser);
 
-  console.log("Starting exploration...\n");
+  console.log("\nStarting exploration...\n");
 
   try {
-    while (step < maxSteps && staleCount < staleLimit) {
-      console.log(
-        `--- Step ${String(step + 1)}/${String(maxSteps)} (stale: ${String(staleCount)}/${String(staleLimit)}) ---`,
-      );
+    while (step < maxSteps) {
+      console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
 
-      let result;
-      try {
-        result = await generateText({
-          model,
-          system: SYSTEM_PROMPT,
-          messages: [
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text" as const,
-                  text: `Current graph:\n${serialize(graph)}${lastAction ? `\n\nLast action: ${lastAction}` : ""}`,
-                },
-                {
-                  type: "image" as const,
-                  image: screenshot,
-                  mediaType: "image/png" as const,
-                },
-              ],
+      const result = await generateText({
+        model,
+        system: SYSTEM_PROMPT,
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text" as const,
+                text: `Current graph:\n${serialize(graph)}${lastAction ? `\n\nLast action: ${lastAction}` : ""}`,
+              },
+              {
+                type: "image" as const,
+                image: screenshot,
+                mediaType: "image/png" as const,
+              },
+            ],
+          },
+        ],
+        tools,
+        stopWhen: [...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)), stepCountIs(10)],
+        providerOptions: {
+          google: {
+            thinkingConfig: {
+              thinkingLevel: "high",
+              includeThoughts: true,
             },
-          ],
-          tools,
-        });
-      } catch (error) {
-        console.error("LLM error:", error);
-        throw error;
-      }
+          },
+        },
+      });
 
-      const inputTokens = result.usage.inputTokens ?? 0;
-      const outputTokens = result.usage.outputTokens ?? 0;
+      const inputTokens = result.totalUsage.inputTokens ?? 0;
+      const outputTokens = result.totalUsage.outputTokens ?? 0;
       totalInputTokens += inputTokens;
       totalOutputTokens += outputTokens;
 
-      if (result.text) {
-        console.log(`\nThinking: ${result.text}\n`);
-      }
+      console.log(`Reasoning: ${result.reasoningText ?? ""}\n`);
+      console.log(`Text: ${result.text}\n`);
 
-      const toolCalls = result.toolCalls;
-      console.log(
-        `Tool calls: ${toolCalls.map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`).join(", ") || "none"}`,
-      );
-
-      const graphOps = toolCalls.filter((tc) => GRAPH_TOOLS.has(tc.toolName));
-      const deviceOps = toolCalls.filter((tc) => DEVICE_TOOLS.has(tc.toolName));
-
-      let addedNodes = false;
-      for (const op of graphOps) {
-        try {
-          if (op.toolName === "addNode") {
-            const args = op.input as { summary: string };
-            const id = addNode(graph, args.summary);
-            console.log(`  Added node: ${id} — ${args.summary}`);
-            addedNodes = true;
-          } else if (op.toolName === "addEdge") {
-            const args = op.input as { from: string; to: string; action: string };
-            addEdge(graph, args.from, args.to, args.action);
-            console.log(`  Added edge: ${args.from} → ${args.to} (${args.action})`);
-          }
-        } catch (error) {
-          console.error(`Graph op ${op.toolName} failed:`, error);
-          throw error;
+      for (const s of result.steps) {
+        if (s.toolCalls.length > 0) {
+          console.log(
+            `Tool calls:\n\t${s.toolCalls.map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`).join("\n\t")}\n`,
+          );
         }
       }
 
-      const deviceAction = deviceOps.at(-1);
-      if (!deviceAction) {
-        console.log("  No device action — skipping");
-        lastAction = null;
-      } else if (deviceOps.length > 1) {
-        console.log(`  Warning: ${String(deviceOps.length)} device actions, using last one`);
+      // Check for exit across all steps
+      const exitCalled = result.steps.some((s) => s.toolCalls.some((tc) => tc.toolName === "exit"));
+      if (exitCalled) {
+        console.log("\n--- Exploration complete ---\n");
+        break;
       }
 
-      if (deviceAction) {
-        if (deviceAction.toolName === "exit") {
-          console.log("\nExploration complete.");
-          break;
-        }
-
-        try {
-          if (deviceAction.toolName === "tap") {
-            const args = deviceAction.input as { x: number; y: number };
-            await tap(browser, args.x, args.y);
+      // Derive lastAction from the terminal device tool call
+      lastAction = null;
+      for (const s of result.steps) {
+        for (const tc of s.toolCalls) {
+          if (tc.toolName === "tap") {
+            const args = tc.input as { x: number; y: number };
             lastAction = `tap(${String(args.x)}, ${String(args.y)})`;
-          } else if (deviceAction.toolName === "pressBack") {
-            await pressBack(browser);
-            lastAction = "pressBack";
-          } else if (deviceAction.toolName === "scroll") {
-            const args = deviceAction.input as { direction: "up" | "down" };
-            await scroll(browser, args.direction);
-            lastAction = `scroll(${args.direction})`;
           }
-          console.log(`  Action: ${String(lastAction)}`);
-        } catch (error) {
-          console.error("Device action failed:", error);
-          throw error;
         }
+      }
+
+      if (lastAction) {
+        console.log(`    Action: ${lastAction}`);
+      } else {
+        console.log("    No device action");
       }
 
       // Wait for UI to settle
@@ -145,23 +107,17 @@ export async function explore({
 
       screenshot = await takeScreenshot(browser);
       step++;
-      if (addedNodes) {
-        staleCount = 0;
-      } else {
-        staleCount++;
-      }
     }
 
-    if (step >= maxSteps) console.log("\nReached max steps limit.");
-    if (staleCount >= staleLimit) console.log("\nReached stale limit.");
+    if (step >= maxSteps) console.log("\n--- Reached max steps limit ---\n");
   } finally {
     await destroySession(browser);
   }
 
   await mkdir("output", { recursive: true });
   await writeFile("output/graph.json", serialize(graph));
-  console.log(`\nGraph saved to output/graph.json`);
-  console.log(`  ${String(graph.nodes.length)} nodes, ${String(graph.edges.length)} edges`);
+  console.log(`Graph saved to output/graph.json`);
+  console.log(`    ${String(graph.nodes.length)} nodes, ${String(graph.edges.length)} edges`);
 
   const totalTokens = totalInputTokens + totalOutputTokens;
   console.log(
@@ -171,7 +127,7 @@ export async function explore({
     const cost =
       (totalInputTokens / 1_000_000) * pricing.inputPerMToken +
       (totalOutputTokens / 1_000_000) * pricing.outputPerMToken;
-    console.log(`Estimated cost: $${cost.toFixed(4)}`);
+    console.log(`Estimated cost: $${cost.toFixed(4)}\n`);
   }
 
   return graph;

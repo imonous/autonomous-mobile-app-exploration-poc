@@ -1,11 +1,24 @@
 import { remote } from "webdriverio";
 import { writeFile, mkdir } from "node:fs/promises";
+import { DOMParser } from "@xmldom/xmldom";
 
 let screenshotCounter = 0;
 
 export interface ScreenSize {
   width: number;
   height: number;
+}
+
+export interface Bounds {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+export interface InteractiveElement {
+  label: string;
+  bounds: Bounds;
 }
 
 export async function createSession(appiumUrl: string): Promise<WebdriverIO.Browser> {
@@ -76,4 +89,76 @@ export async function scroll(
 
 export async function getScreenSize(browser: WebdriverIO.Browser): Promise<ScreenSize> {
   return browser.getWindowSize();
+}
+
+function parseBounds(raw: string): Bounds | null {
+  const m = /^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$/.exec(raw);
+  if (!m) return null;
+  return {
+    left: Number(m[1]),
+    top: Number(m[2]),
+    right: Number(m[3]),
+    bottom: Number(m[4]),
+  };
+}
+
+function buildLabel(el: Element): string {
+  const text = el.getAttribute("text") ?? "";
+  const contentDesc = el.getAttribute("content-desc") ?? "";
+  const parts = [text, contentDesc].filter(Boolean);
+  if (parts.length > 0) return parts.join(" — ");
+
+  const resourceId = el.getAttribute("resource-id") ?? "";
+  if (resourceId) {
+    const segments = resourceId.split("/");
+    return segments[segments.length - 1] ?? resourceId;
+  }
+  return "(unlabeled)";
+}
+
+export async function getInteractiveElements(
+  browser: WebdriverIO.Browser,
+): Promise<InteractiveElement[]> {
+  const xml = await browser.getPageSource();
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
+  const all = Array.from(doc.getElementsByTagName("*"));
+  const elements: InteractiveElement[] = [];
+
+  for (const el of all) {
+    if (el.getAttribute("clickable") !== "true") continue;
+    if (el.getAttribute("enabled") !== "true") continue;
+
+    const bounds = parseBounds(el.getAttribute("bounds") ?? "");
+    if (!bounds) continue;
+    if (bounds.left === bounds.right || bounds.top === bounds.bottom) continue;
+
+    elements.push({ label: buildLabel(el), bounds });
+  }
+
+  return elements;
+}
+
+export function formatElementList(elements: InteractiveElement[]): string {
+  return elements
+    .map(
+      (el, i) =>
+        `[${String(i)}] "${el.label}" [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`,
+    )
+    .join("\n");
+}
+
+export async function tapElement(
+  browser: WebdriverIO.Browser,
+  elements: InteractiveElement[],
+  index: number,
+): Promise<void> {
+  if (index < 0 || index >= elements.length) {
+    throw new Error(
+      `Element index ${String(index)} out of range (0-${String(elements.length - 1)})`,
+    );
+  }
+  const { bounds } = elements[index];
+  const x = Math.round((bounds.left + bounds.right) / 2);
+  const y = Math.round((bounds.top + bounds.bottom) / 2);
+  await tap(browser, x, y);
 }
