@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exploration Graph</title>
+  <script src="https://unpkg.com/cytoscape@3/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/dagre@0.8/dist/dagre.min.js"></script>
+  <script src="https://unpkg.com/cytoscape-dagre@2/cytoscape-dagre.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1a1a2e; font-family: system-ui, sans-serif; }
+    #cy { width: 100vw; height: 100vh; }
+    #status {
+      position: fixed; top: 12px; right: 16px;
+      color: #8888aa; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div id="cy"></div>
+  <div id="status">Loading...</div>
+  <script>
+    const BASE = "../output";
+
+    const cy = cytoscape({
+      container: document.getElementById("cy"),
+      style: [
+        {
+          selector: "node",
+          style: {
+            "width": 120,
+            "height": 240,
+            "background-image": (el) => `${BASE}/screenshots/${el.id()}.png`,
+            "background-fit": "cover",
+            "background-color": "#2a2a4a",
+            "border-width": 2,
+            "border-color": "#5555aa",
+            "shape": "round-rectangle",
+            "label": "data(summary)",
+            "text-valign": "bottom",
+            "text-margin-y": 8,
+            "color": "#ccccee",
+            "font-size": 10,
+            "text-wrap": "wrap",
+            "text-max-width": 120,
+          },
+        },
+        {
+          selector: "edge",
+          style: {
+            "width": 2,
+            "line-color": "#5555aa",
+            "target-arrow-color": "#5555aa",
+            "target-arrow-shape": "triangle",
+            "curve-style": "bezier",
+            "label": "data(action)",
+            "color": "#8888bb",
+            "font-size": 9,
+            "text-rotation": "autorotate",
+            "text-margin-y": -10,
+          },
+        },
+      ],
+      layout: { name: "preset" },
+      userZoomingEnabled: true,
+      userPanningEnabled: true,
+    });
+
+    const knownNodes = new Set();
+    const knownEdges = new Set();
+    const statusEl = document.getElementById("status");
+
+    function edgeId(from, to, action) {
+      return `${from}--${action}-->${to}`;
+    }
+
+    async function poll() {
+      try {
+        const res = await fetch(`${BASE}/graph.json?t=${Date.now()}`);
+        if (!res.ok) return;
+        const graph = await res.json();
+        let added = false;
+
+        for (const node of graph.nodes) {
+          if (knownNodes.has(node.id)) continue;
+          knownNodes.add(node.id);
+          cy.add({ group: "nodes", data: { id: node.id, summary: node.summary } });
+          added = true;
+        }
+
+        for (const edge of graph.edges) {
+          const eid = edgeId(edge.from, edge.to, edge.action);
+          if (knownEdges.has(eid)) continue;
+          knownEdges.add(eid);
+          cy.add({ group: "edges", data: { source: edge.from, target: edge.to, action: edge.action } });
+          added = true;
+        }
+
+        if (added) {
+          cy.layout({
+            name: "dagre",
+            rankDir: "TB",
+            nodeSep: 40,
+            rankSep: 80,
+            animate: true,
+            animationDuration: 300,
+          }).run();
+        }
+
+        statusEl.textContent = `${knownNodes.size} nodes, ${knownEdges.size} edges`;
+      } catch {
+        // graph.json may not exist yet or be mid-write
+      }
+    }
+
+    poll();
+    setInterval(poll, 500);
+  </script>
+</body>
+</html>

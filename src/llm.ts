@@ -70,7 +70,7 @@ export const SYSTEM_PROMPT = `You are an autonomous Android app explorer. Your j
 ## What you see each turn
 - The current exploration graph (JSON with nodes and edges)
 - A screenshot of the current app screen
-- The last device action you took (if any)
+- Your previous turn's full exchange (reasoning, tool calls, and results) when available — earlier history is truncated
 
 ## Rules
 1. Each turn, you may call graph mutation tools (addNode, addEdge) and then exactly ONE device action (tap or exit).

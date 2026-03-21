@@ -1,4 +1,4 @@
-import { generateText, hasToolCall, stepCountIs, type LanguageModel } from "ai";
+import { generateText, hasToolCall, stepCountIs, type LanguageModel, type ModelMessage } from "ai";
 import { createGraph, serialize, type Graph } from "./graph.js";
 import {
   createSession,
@@ -29,7 +29,8 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   let step = 0;
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
-  let lastAction: string | null = null;
+  let prevUserContent: { type: "text"; text: string }[] | null = null;
+  let prevResponseMessages: ModelMessage[] | null = null;
   let screenshot = await takeScreenshot(browser);
   let elements = await getInteractiveElements(browser);
 
@@ -45,25 +46,39 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       const elementListText = formatElementList(elements);
       const prevNodeCount = graph.nodes.length;
 
+      const currentText = `Current graph:\n${serialize(graph)}\n\nInteractive elements:\n${elementListText}`;
+      const currentUserContent: { type: "text"; text: string }[] = [
+        { type: "text" as const, text: currentText },
+      ];
+
+      const messages: ModelMessage[] = [];
+      if (prevUserContent && prevResponseMessages) {
+        const prevText =
+          step >= 2
+            ? `[Earlier exploration history truncated. The graph contains all discoveries.]\n\n${prevUserContent[0].text}`
+            : prevUserContent[0].text;
+        messages.push({
+          role: "user" as const,
+          content: [{ type: "text" as const, text: prevText }],
+        });
+        messages.push(...prevResponseMessages);
+      }
+      messages.push({
+        role: "user" as const,
+        content: [
+          ...currentUserContent,
+          {
+            type: "image" as const,
+            image: screenshot,
+            mediaType: "image/png" as const,
+          },
+        ],
+      });
+
       const result = await generateText({
         model,
         system: SYSTEM_PROMPT,
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text" as const,
-                text: `Current graph:\n${serialize(graph)}${lastAction ? `\n\nLast action: ${lastAction}` : ""}\n\nInteractive elements:\n${elementListText}`,
-              },
-              {
-                type: "image" as const,
-                image: screenshot,
-                mediaType: "image/png" as const,
-              },
-            ],
-          },
-        ],
+        messages,
         tools,
         stopWhen: [...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)), stepCountIs(10)],
         providerOptions: {
@@ -107,24 +122,27 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
         break;
       }
 
-      // Derive lastAction from the terminal device tool call and execute tap
-      lastAction = null;
+      // Execute tap actions
+      let tapped = false;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
             const args = tc.input as { elementIndex: number };
             await tapElement(browser, elements, args.elementIndex);
             const el = elements[args.elementIndex];
-            lastAction = `Tapped [${String(args.elementIndex)}] "${el.label}"`;
+            console.log(`Action: Tapped [${String(args.elementIndex)}] "${el.label}"`);
+            tapped = true;
           }
         }
       }
 
-      if (lastAction) {
-        console.log(`Action: ${lastAction}`);
-      } else {
+      if (!tapped) {
         console.log("No device action");
       }
+
+      // Save previous turn for sliding window context
+      prevUserContent = currentUserContent;
+      prevResponseMessages = result.response.messages;
 
       // Wait for UI to settle
       await new Promise((resolve) => setTimeout(resolve, 1000));
