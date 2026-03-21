@@ -10,7 +10,7 @@ import {
 } from "./device.js";
 import { createTools, DEVICE_TOOL_NAMES, SYSTEM_PROMPT, MODEL_PRICING } from "./llm.js";
 import { env } from "./env.js";
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, rm } from "node:fs/promises";
 
 interface ExploreOptions {
   maxSteps: number;
@@ -33,6 +33,9 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   let screenshot = await takeScreenshot(browser);
   let elements = await getInteractiveElements(browser);
 
+  await rm("output", { recursive: true, force: true });
+  await mkdir("output/screenshots", { recursive: true });
+
   console.log("\nStarting exploration...\n\n");
 
   try {
@@ -40,6 +43,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       console.log(`--- Step ${String(step + 1)}/${String(maxSteps)} ---`);
 
       const elementListText = formatElementList(elements);
+      const prevNodeCount = graph.nodes.length;
 
       const result = await generateText({
         model,
@@ -87,6 +91,15 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
         );
       }
 
+      // Save screenshots for any new nodes created this step
+      for (let i = prevNodeCount; i < graph.nodes.length; i++) {
+        await writeFile(
+          `output/screenshots/${graph.nodes[i].id}.png`,
+          Buffer.from(screenshot, "base64"),
+        );
+      }
+      await writeFile("output/graph.json", serialize(graph));
+
       // Check for exit across all steps
       const exitCalled = result.steps.some((s) => s.toolCalls.some((tc) => tc.toolName === "exit"));
       if (exitCalled) {
@@ -126,8 +139,6 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
     await destroySession(browser);
   }
 
-  await mkdir("output", { recursive: true });
-  await writeFile("output/graph.json", serialize(graph));
   console.log(`Graph saved to output/graph.json`);
   console.log(`    ${String(graph.nodes.length)} nodes, ${String(graph.edges.length)} edges`);
 

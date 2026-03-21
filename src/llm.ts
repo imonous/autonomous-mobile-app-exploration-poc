@@ -24,9 +24,9 @@ export function createTools(graph: Graph) {
           .string()
           .describe(
             "Description of the screen. Capture: the screen title or header text, " +
-            "all visible interactive elements (buttons, tabs, inputs, list items), " +
-            "visual state (which tab is selected, toggle positions, badge counts), " +
-            "and any overlays such as modals, bottom sheets, or dialogs."
+              "all visible interactive elements (buttons, tabs, inputs, list items), " +
+              "visual state (which tab is selected, toggle positions, badge counts), " +
+              "and any overlays such as modals, bottom sheets, or dialogs.",
           ),
       }),
       execute: ({ description }) => Promise.resolve(addNode(graph, description)),

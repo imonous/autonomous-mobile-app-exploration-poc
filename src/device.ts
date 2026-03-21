@@ -1,8 +1,5 @@
 import { remote } from "webdriverio";
-import { writeFile, mkdir } from "node:fs/promises";
 import { DOMParser } from "@xmldom/xmldom";
-
-let screenshotCounter = 0;
 
 export interface ScreenSize {
   width: number;
@@ -41,13 +38,7 @@ export async function destroySession(browser: WebdriverIO.Browser): Promise<void
 }
 
 export async function takeScreenshot(browser: WebdriverIO.Browser): Promise<string> {
-  const base64 = await browser.takeScreenshot();
-  await mkdir("output/screenshots", { recursive: true });
-  await writeFile(
-    `output/screenshots/step-${String(screenshotCounter++)}.png`,
-    Buffer.from(base64, "base64"),
-  );
-  return base64;
+  return browser.takeScreenshot();
 }
 
 export async function tap(browser: WebdriverIO.Browser, x: number, y: number): Promise<void> {
