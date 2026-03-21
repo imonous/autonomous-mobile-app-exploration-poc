@@ -15,13 +15,30 @@
       position: fixed; top: 12px; right: 16px;
       color: #8888aa; font-size: 13px;
     }
+    #tooltip {
+      position: fixed;
+      display: none;
+      background: #2a2a4a;
+      border: 1px solid #6666bb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #ddddef;
+      font-size: 12px;
+      line-height: 1.4;
+      max-width: 280px;
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
   </style>
 </head>
 <body>
   <div id="cy"></div>
   <div id="status">Loading...</div>
+  <div id="tooltip"></div>
   <script>
     const BASE = "../output";
+    const tooltip = document.getElementById("tooltip");
 
     const cy = cytoscape({
       container: document.getElementById("cy"),
@@ -37,13 +54,17 @@
             "border-width": 2,
             "border-color": "#5555aa",
             "shape": "round-rectangle",
-            "label": "data(summary)",
+            "label": "data(shortLabel)",
             "text-valign": "bottom",
             "text-margin-y": 8,
             "color": "#ccccee",
-            "font-size": 10,
+            "font-size": 11,
             "text-wrap": "wrap",
             "text-max-width": 120,
+            "text-background-color": "#1a1a2e",
+            "text-background-opacity": 0.85,
+            "text-background-padding": "4px",
+            "text-background-shape": "roundrectangle",
           },
         },
         {
@@ -55,10 +76,13 @@
             "target-arrow-shape": "triangle",
             "curve-style": "bezier",
             "label": "data(action)",
-            "color": "#8888bb",
-            "font-size": 9,
-            "text-rotation": "autorotate",
-            "text-margin-y": -10,
+            "color": "#bbbbdd",
+            "font-size": 10,
+            "text-margin-x": 12,
+            "text-background-color": "#1a1a2e",
+            "text-background-opacity": 0.85,
+            "text-background-padding": "3px",
+            "text-background-shape": "roundrectangle",
           },
         },
       ],
@@ -67,6 +91,33 @@
       userPanningEnabled: true,
     });
 
+    // Truncate summary to ~2 lines for the node label
+    function truncate(text, maxLen = 50) {
+      if (!text || text.length <= maxLen) return text || "";
+      return text.slice(0, maxLen).trimEnd() + "...";
+    }
+
+    // Tooltip on hover
+    cy.on("mouseover", "node", (e) => {
+      const node = e.target;
+      const summary = node.data("summary");
+      if (!summary) return;
+      tooltip.textContent = summary;
+      tooltip.style.display = "block";
+    });
+
+    cy.on("mousemove", "node", (e) => {
+      const x = e.originalEvent.clientX + 12;
+      const y = e.originalEvent.clientY + 12;
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    });
+
+    cy.on("mouseout", "node", () => {
+      tooltip.style.display = "none";
+    });
+
+    const isLive = new URLSearchParams(location.search).has("live");
     const knownNodes = new Set();
     const knownEdges = new Set();
     const statusEl = document.getElementById("status");
@@ -81,12 +132,21 @@
         if (!res.ok) return;
         const graph = await res.json();
         let added = false;
+        let latestNodeId = null;
 
         for (const node of graph.nodes) {
           if (knownNodes.has(node.id)) continue;
           knownNodes.add(node.id);
-          cy.add({ group: "nodes", data: { id: node.id, summary: node.summary } });
+          cy.add({
+            group: "nodes",
+            data: {
+              id: node.id,
+              summary: node.summary,
+              shortLabel: truncate(node.summary),
+            },
+          });
           added = true;
+          latestNodeId = node.id;
         }
 
         for (const edge of graph.edges) {
@@ -98,14 +158,29 @@
         }
 
         if (added) {
-          cy.layout({
+          const layout = cy.layout({
             name: "dagre",
-            rankDir: "TB",
-            nodeSep: 40,
-            rankSep: 80,
+            rankDir: "LR",
+            nodeSep: 60,
+            rankSep: 140,
             animate: true,
             animationDuration: 300,
-          }).run();
+          });
+
+          if (isLive && latestNodeId) {
+            layout.on("layoutstop", () => {
+              const node = cy.getElementById(latestNodeId);
+              if (node.length) {
+                cy.animate({
+                  center: { eles: node },
+                  zoom: 0.8,
+                  duration: 300,
+                });
+              }
+            });
+          }
+
+          layout.run();
         }
 
         statusEl.textContent = `${knownNodes.size} nodes, ${knownEdges.size} edges`;
@@ -115,7 +190,9 @@
     }
 
     poll();
-    setInterval(poll, 500);
+    if (isLive) {
+      setInterval(poll, 200);
+    }
   </script>
 </body>
 </html>

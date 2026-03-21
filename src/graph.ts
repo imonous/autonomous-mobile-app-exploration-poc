@@ -19,7 +19,7 @@ export function createGraph(): Graph {
 }
 
 export function addNode(graph: Graph, summary: string): string {
-  const id = `screen_${String(graph.nodes.length)}`;
+  const id = `view_${String(graph.nodes.length)}`;
   graph.nodes.push({ id, summary });
   return id;
 }

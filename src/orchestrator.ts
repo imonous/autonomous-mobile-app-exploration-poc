@@ -20,7 +20,7 @@ interface ExploreOptions {
 
 export async function explore({ maxSteps, model, modelId }: ExploreOptions): Promise<Graph> {
   const pricing = MODEL_PRICING[modelId] as
-    | { inputPerMToken: number; outputPerMToken: number }
+    | { inputPerMToken: number; outputPerMToken: number; thinkingPerMToken: number }
     | undefined;
   const browser = await createSession(env.APPIUM_URL);
   const graph = createGraph();
@@ -29,6 +29,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   let step = 0;
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
+  let totalThinkingTokens = 0;
   let prevUserContent: { type: "text"; text: string }[] | null = null;
   let prevResponseMessages: ModelMessage[] | null = null;
   let screenshot = await takeScreenshot(browser);
@@ -92,9 +93,11 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       });
 
       const inputTokens = result.totalUsage.inputTokens ?? 0;
-      const outputTokens = result.totalUsage.outputTokens ?? 0;
+      const thinkingTokens = result.totalUsage.outputTokenDetails.reasoningTokens ?? 0;
+      const outputTokens = (result.totalUsage.outputTokens ?? 0) - thinkingTokens;
       totalInputTokens += inputTokens;
       totalOutputTokens += outputTokens;
+      totalThinkingTokens += thinkingTokens;
 
       console.log(`Reasoning:\n"""\n${result.reasoningText ?? ""}\n"""`);
       console.log(`Text: "${result.text}"`);
@@ -160,14 +163,15 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   console.log(`Graph saved to output/graph.json`);
   console.log(`    ${String(graph.nodes.length)} nodes, ${String(graph.edges.length)} edges`);
 
-  const totalTokens = totalInputTokens + totalOutputTokens;
+  const totalTokens = totalInputTokens + totalOutputTokens + totalThinkingTokens;
   console.log(
-    `\nToken usage: ${String(totalInputTokens)} input + ${String(totalOutputTokens)} output = ${String(totalTokens)} total`,
+    `\nToken usage: ${String(totalInputTokens)} input + ${String(totalOutputTokens)} output + ${String(totalThinkingTokens)} thinking = ${String(totalTokens)} total`,
   );
   if (pricing) {
     const cost =
       (totalInputTokens / 1_000_000) * pricing.inputPerMToken +
-      (totalOutputTokens / 1_000_000) * pricing.outputPerMToken;
+      (totalOutputTokens / 1_000_000) * pricing.outputPerMToken +
+      (totalThinkingTokens / 1_000_000) * pricing.thinkingPerMToken;
     console.log(`Cost: $${cost.toFixed(4)}`);
   }
 

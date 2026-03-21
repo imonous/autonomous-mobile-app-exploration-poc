@@ -5,10 +5,11 @@ import { addNode, addEdge, type Graph } from "./graph.js";
 export interface Pricing {
   inputPerMToken: number;
   outputPerMToken: number;
+  thinkingPerMToken: number;
 }
 
 export const MODEL_PRICING: Record<string, Pricing> = {
-  "gemini-3-flash-preview": { inputPerMToken: 0.1, outputPerMToken: 0.4 },
+  "gemini-3-flash-preview": { inputPerMToken: 0.5, outputPerMToken: 3.0, thinkingPerMToken: 3.0 },
 };
 
 export const DEVICE_TOOL_NAMES = ["tap", "exit"] as const;
@@ -18,26 +19,22 @@ export function createTools(graph: Graph) {
   return {
     addNode: tool({
       description:
-        "Register a new screen in the graph. Call this when the current screenshot shows a screen not yet in the graph. Returns the new node's ID.",
+        "Register a new view in the graph. Call this when the current screenshot shows a view not yet in the graph. Returns the new node's ID.",
       inputSchema: z.object({
-        description: z
-          .string()
-          .describe(
-            "Description of the screen. Capture: the screen title or header text, " +
-              "all visible interactive elements (buttons, tabs, inputs, list items), " +
-              "visual state (which tab is selected, toggle positions, badge counts), " +
-              "and any overlays such as modals, bottom sheets, or dialogs.",
-          ),
+        description: z.string().describe(
+          "Description of the view. Capture: the screen title or header text, " +
+            "all visible interactive elements (buttons, tabs, inputs, list items), " +
+            "and any overlays such as modals, bottom sheets, or dialogs.", // TODO
+        ),
       }),
       execute: ({ description }) => Promise.resolve(addNode(graph, description)),
     }),
 
     addEdge: tool({
-      description:
-        "Record a transition between two screens. Call this after performing a device action that moved from one known screen to another.",
+      description: "Record a transition between two views.",
       inputSchema: z.object({
-        from: z.string().describe("Source node ID (e.g. screen_0)"),
-        to: z.string().describe("Destination node ID (e.g. screen_1)"),
+        from: z.string().describe("Source node ID (e.g. view_0)"),
+        to: z.string().describe("Destination node ID (e.g. view_1)"),
         action: z.string().describe("What caused the transition (e.g. \"Tapped 'Timer' tab\")"),
       }),
       execute: ({ from, to, action }) => {
@@ -58,32 +55,34 @@ export function createTools(graph: Graph) {
 
     exit: tool({
       description:
-        "Signal that exploration is complete. Call this when you believe all reachable screens and transitions have been discovered.",
+        "Signal that exploration is complete. Call this when you believe all reachable views and transitions have been discovered.",
       inputSchema: z.object({}),
       execute: () => Promise.resolve("ok"),
     }),
   };
 }
 
-export const SYSTEM_PROMPT = `You are an autonomous Android app explorer. Your job is to systematically explore every screen and interaction in the app, building a graph of screens (nodes) and transitions (edges).
+export const SYSTEM_PROMPT = `You are an autonomous Android app explorer. Your job is to systematically explore every view and interaction in the app, building a graph of views (nodes) and transitions (edges).
 
-## What you see each turn
-- The current exploration graph (JSON with nodes and edges)
-- A screenshot of the current app screen
-- Your previous turn's full exchange (reasoning, tool calls, and results) when available — earlier history is truncated
+## When to add a node
+A node represents a visually distinct view — not every minor content change.
 
-## Rules
-1. Each turn, you may call graph mutation tools (addNode, addEdge) and then exactly ONE device action (tap or exit).
-2. addNode returns the new node's ID — use it in subsequent addEdge calls.
-3. When you see a screen for the first time, call addNode to register it BEFORE taking a device action.
-4. After a device action transitions you to a different screen, record the transition with addEdge on the NEXT turn (when you can see the result).
-5. The app is pinned — you cannot leave it. Do not try to go to the home screen.
-6. Call exactly one device tool (tap or exit) when you are done with graph operations.
+Add a new node when:
+- You navigate to a different page
+- A modal, bottom sheet, or dialog appears
+- A menu or dropdown opens revealing new interactive elements
+
+Do NOT add a new node when:
+- A text field value changes
+- A loading spinner appears/disappears
+- Content refreshes but the layout and available interactions stay the same
+
+## Notes
+1. Each turn, you may call at most ONE device action (tap, exit).
+2. Always add nodes and edges first, before taking a device action (tap, exit).
+3. Screenshots from older turns are truncated.
 
 ## Strategy
-- Explore systematically: try every visible button, tab, menu item, and interactive element.
-- Prefer unexplored areas over revisiting known screens.
-- When you have thoroughly explored all reachable screens, call exit.
-
-## Interactive elements
-Each turn you receive a numbered list of interactive (tappable) elements parsed from the screen's UI tree. Use \`tap({ elementIndex })\` with the element's index to tap it. Do NOT guess pixel coordinates.`;
+- Use depth-first exploration: when you reach a new view, go deeper before exploring siblings.
+- Backtrack when you hit a dead end or an already-known view.
+- When you have thoroughly explored all reachable views, call exit.`;
