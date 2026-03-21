@@ -1,7 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod/v4";
 import { addNode, addEdge, type Graph } from "./graph.js";
-import { tap } from "./device.js";
 
 export interface Pricing {
   inputPerMToken: number;
@@ -15,15 +14,22 @@ export const MODEL_PRICING: Record<string, Pricing> = {
 export const DEVICE_TOOL_NAMES = ["tap", "exit"] as const;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function createTools(graph: Graph, browser: WebdriverIO.Browser) {
+export function createTools(graph: Graph) {
   return {
     addNode: tool({
       description:
         "Register a new screen in the graph. Call this when the current screenshot shows a screen not yet in the graph. Returns the new node's ID.",
       inputSchema: z.object({
-        summary: z.string().describe("1-2 sentence description of the screen content and purpose"),
+        description: z
+          .string()
+          .describe(
+            "Description of the screen. Capture: the screen title or header text, " +
+            "all visible interactive elements (buttons, tabs, inputs, list items), " +
+            "visual state (which tab is selected, toggle positions, badge counts), " +
+            "and any overlays such as modals, bottom sheets, or dialogs."
+          ),
       }),
-      execute: ({ summary }) => Promise.resolve(addNode(graph, summary)),
+      execute: ({ description }) => Promise.resolve(addNode(graph, description)),
     }),
 
     addEdge: tool({
@@ -41,16 +47,13 @@ export function createTools(graph: Graph, browser: WebdriverIO.Browser) {
     }),
 
     tap: tool({
-      description:
-        "Tap a point on the screen. Coordinates are pixels relative to the screenshot (top-left = 0,0).",
+      description: "Tap an interactive element on screen by its index from the element list.",
       inputSchema: z.object({
-        x: z.number().describe("X coordinate in pixels"),
-        y: z.number().describe("Y coordinate in pixels"),
+        elementIndex: z
+          .number()
+          .describe("Index of the element to tap from the interactive elements list"),
       }),
-      execute: async ({ x, y }) => {
-        await tap(browser, x, y);
-        return "ok";
-      },
+      execute: () => Promise.resolve("ok"),
     }),
 
     exit: tool({
@@ -82,5 +85,5 @@ export const SYSTEM_PROMPT = `You are an autonomous Android app explorer. Your j
 - Prefer unexplored areas over revisiting known screens.
 - When you have thoroughly explored all reachable screens, call exit.
 
-## Coordinates
-Tap coordinates are in pixels relative to the screenshot image. Top-left corner is (0, 0).`;
+## Interactive elements
+Each turn you receive a numbered list of interactive (tappable) elements parsed from the screen's UI tree. Use \`tap({ elementIndex })\` with the element's index to tap it. Do NOT guess pixel coordinates.`;

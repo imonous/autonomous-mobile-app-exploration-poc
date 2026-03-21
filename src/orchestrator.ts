@@ -1,6 +1,13 @@
 import { generateText, hasToolCall, stepCountIs, type LanguageModel } from "ai";
 import { createGraph, serialize, type Graph } from "./graph.js";
-import { createSession, destroySession, takeScreenshot } from "./device.js";
+import {
+  createSession,
+  destroySession,
+  takeScreenshot,
+  getInteractiveElements,
+  formatElementList,
+  tapElement,
+} from "./device.js";
 import { createTools, DEVICE_TOOL_NAMES, SYSTEM_PROMPT, MODEL_PRICING } from "./llm.js";
 import { env } from "./env.js";
 import { writeFile, mkdir } from "node:fs/promises";
@@ -17,19 +24,22 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
     | undefined;
   const browser = await createSession(env.APPIUM_URL);
   const graph = createGraph();
-  const tools = createTools(graph, browser);
+  const tools = createTools(graph);
 
   let step = 0;
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
   let lastAction: string | null = null;
   let screenshot = await takeScreenshot(browser);
+  let elements = await getInteractiveElements(browser);
 
-  console.log("\nStarting exploration...\n");
+  console.log("\nStarting exploration...\n\n");
 
   try {
     while (step < maxSteps) {
-      console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
+      console.log(`--- Step ${String(step + 1)}/${String(maxSteps)} ---`);
+
+      const elementListText = formatElementList(elements);
 
       const result = await generateText({
         model,
@@ -40,7 +50,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
             content: [
               {
                 type: "text" as const,
-                text: `Current graph:\n${serialize(graph)}${lastAction ? `\n\nLast action: ${lastAction}` : ""}`,
+                text: `Current graph:\n${serialize(graph)}${lastAction ? `\n\nLast action: ${lastAction}` : ""}\n\nInteractive elements:\n${elementListText}`,
               },
               {
                 type: "image" as const,
@@ -67,49 +77,51 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       totalInputTokens += inputTokens;
       totalOutputTokens += outputTokens;
 
-      console.log(`Reasoning: ${result.reasoningText ?? ""}\n`);
-      console.log(`Text: ${result.text}\n`);
+      console.log(`Reasoning:\n"""\n${result.reasoningText ?? ""}\n"""`);
+      console.log(`Text: "${result.text}"`);
 
-      for (const s of result.steps) {
-        if (s.toolCalls.length > 0) {
-          console.log(
-            `Tool calls:\n\t${s.toolCalls.map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`).join("\n\t")}\n`,
-          );
-        }
+      const allToolCalls = result.steps.flatMap((s) => s.toolCalls);
+      if (allToolCalls.length > 0) {
+        console.log(
+          `Tool calls:\n    ${allToolCalls.map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`).join("\n    ")}`,
+        );
       }
 
       // Check for exit across all steps
       const exitCalled = result.steps.some((s) => s.toolCalls.some((tc) => tc.toolName === "exit"));
       if (exitCalled) {
-        console.log("\n--- Exploration complete ---\n");
+        console.log("--- Exploration complete ---");
         break;
       }
 
-      // Derive lastAction from the terminal device tool call
+      // Derive lastAction from the terminal device tool call and execute tap
       lastAction = null;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
-            const args = tc.input as { x: number; y: number };
-            lastAction = `tap(${String(args.x)}, ${String(args.y)})`;
+            const args = tc.input as { elementIndex: number };
+            await tapElement(browser, elements, args.elementIndex);
+            const el = elements[args.elementIndex];
+            lastAction = `Tapped [${String(args.elementIndex)}] "${el.label}"`;
           }
         }
       }
 
       if (lastAction) {
-        console.log(`    Action: ${lastAction}`);
+        console.log(`Action: ${lastAction}`);
       } else {
-        console.log("    No device action");
+        console.log("No device action");
       }
 
       // Wait for UI to settle
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       screenshot = await takeScreenshot(browser);
+      elements = await getInteractiveElements(browser);
       step++;
     }
 
-    if (step >= maxSteps) console.log("\n--- Reached max steps limit ---\n");
+    if (step >= maxSteps) console.log("--- Reached max steps limit ---");
   } finally {
     await destroySession(browser);
   }
@@ -127,7 +139,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
     const cost =
       (totalInputTokens / 1_000_000) * pricing.inputPerMToken +
       (totalOutputTokens / 1_000_000) * pricing.outputPerMToken;
-    console.log(`Estimated cost: $${cost.toFixed(4)}\n`);
+    console.log(`Cost: $${cost.toFixed(4)}`);
   }
 
   return graph;
