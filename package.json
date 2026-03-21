@@ -5,7 +5,8 @@
   "scripts": {
     "check": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix"
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "start": "tsx src/index.ts"
   },
   "type": "module",
   "engines": {
@@ -16,6 +17,8 @@
   "devDependencies": {
     "@eslint/js": "^9.31.0",
     "@types/node": "^25.5.0",
+    "appium": "^3.2.2",
+    "appium-uiautomator2-driver": "^7.0.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
@@ -26,7 +29,11 @@
     "typescript-eslint": "^8.37.0"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.63",
+    "@ai-sdk/google": "^3.0.52",
+    "ai": "^6.0.134",
     "dotenv": "^17.3.1",
+    "webdriverio": "^9.26.1",
     "zod": "^4.3.6"
   }
 }

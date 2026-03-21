@@ -6,6 +6,7 @@ dotenv.config();
 const envSchema = z.object({
   GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
   ANTHROPIC_API_KEY: z.string(),
+  APPIUM_URL: z.url().optional().default("http://127.0.0.1:4723"),
 });
 
 const parsed = envSchema.safeParse(process.env);
