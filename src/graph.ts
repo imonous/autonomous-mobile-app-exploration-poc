@@ -85,7 +85,8 @@ export function printChecklist(graph: Graph): void {
 
   for (const node of graph.nodes) {
     if (node.checklist.length === 0) continue;
-    console.log(`  ${node.id} (${node.summary}):`);
+    const desc = node.summary.length > 60 ? node.summary.slice(0, 60) + "…" : node.summary;
+    console.log(`  ${node.id} (${desc}):`);
     for (const item of node.checklist) {
       const prefix = item.explored ? "\x1b[2m  \u2713" : "  \u2717";
       const suffix = item.explored ? "\x1b[0m" : "";

@@ -150,7 +150,7 @@ export async function explore({
       totalThinkingTokens += thinkingTokens;
 
       if (result.reasoningText) {
-        console.log(`\n\x1b[2m${result.reasoningText.trim()}\x1b[0m`);
+        console.log(`\n\x1b[2m${result.reasoningText.trim()}\x1b[0m\n`);
       }
       if (result.text) console.log(result.text.trim());
 

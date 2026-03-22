@@ -66,6 +66,8 @@ export function createTools(graph: Graph) {
       execute: ({ description, checklist, from, action }): Promise<AddNodeResult> => {
         const id = addNode(graph, description);
         const checklistElements = addChecklistElements(graph, id, checklist);
+        if (from && !action) throw new Error("'action' is required when 'from' is provided");
+        if (!from && action) throw new Error("'from' is required when 'action' is provided");
         if (from && action) {
           addEdge(graph, from, id, action);
         }
