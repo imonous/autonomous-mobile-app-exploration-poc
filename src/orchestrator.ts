@@ -188,7 +188,7 @@ export async function explore({
         }
       }
 
-      if (!tapped && allExplored(graph)) {
+      if (allExplored(graph) && step > 0) {
         console.log("--- Exploration complete (all checklist elements explored) ---");
         break;
       }

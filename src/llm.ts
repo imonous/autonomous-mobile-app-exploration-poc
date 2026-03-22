@@ -153,6 +153,4 @@ Exploration ends automatically when every checklist element is marked explored.
 If a checklist element is no longer viable, you may discard it by marking as explored.
 
 ## Strategy
-- Use depth-first exploration: when you reach a new view, go deeper before exploring siblings.
-- When backtracking, always return to the nearest node with unexplored checklist elements before moving to a different branch.
-- Backtrack when you hit a dead end or an already-known view.`;
+Exhaust the current view first (depth-first). Check off every unchecked checklist element for the current view before navigating away. Leaving with unchecked items means backtracking later, wasting taps.`;
