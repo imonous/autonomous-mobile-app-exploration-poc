@@ -37,7 +37,8 @@
   <div id="status">Loading...</div>
   <div id="tooltip"></div>
   <script>
-    const BASE = "../output";
+    const run = new URLSearchParams(location.search).get("run");
+    const BASE = run ? `../output/${run}` : "../output";
     const tooltip = document.getElementById("tooltip");
 
     const cy = cytoscape({
