@@ -1,4 +1,5 @@
 export interface ChecklistElement {
+  id: string;
   label: string;
   explored: boolean;
 }
@@ -37,25 +38,37 @@ export function addEdge(graph: Graph, from: string, to: string, action: string):
   graph.edges.push({ from, to, action });
 }
 
-export function addChecklistElements(graph: Graph, nodeId: string, labels: string[]): void {
+export function addChecklistElements(
+  graph: Graph,
+  nodeId: string,
+  labels: string[],
+): { id: string; label: string }[] {
   const node = graph.nodes.find((n) => n.id === nodeId);
   if (!node) throw new Error(`Unknown node: ${nodeId}`);
-  for (const label of labels) {
-    node.checklist.push({ label, explored: false });
+  const startIndex = graph.nodes.reduce((sum, n) => sum + n.checklist.length, 0);
+  const result: { id: string; label: string }[] = [];
+  for (let i = 0; i < labels.length; i++) {
+    const id = `check_${String(startIndex + i)}`;
+    node.checklist.push({ id, label: labels[i], explored: false });
+    result.push({ id, label: labels[i] });
   }
+  return result;
 }
 
-export function markExplored(graph: Graph, nodeId: string, elementLabel: string): void {
-  const node = graph.nodes.find((n) => n.id === nodeId);
-  if (!node) throw new Error(`Unknown node: ${nodeId}`);
-  const entry = node.checklist.find((e) => e.label === elementLabel);
-  if (!entry) throw new Error(`Unknown checklist element: "${elementLabel}" on node ${nodeId}`);
-  entry.explored = true;
+export function markExplored(graph: Graph, checklistElementId: string): void {
+  for (const node of graph.nodes) {
+    const entry = node.checklist.find((e) => e.id === checklistElementId);
+    if (entry) {
+      entry.explored = true;
+      return;
+    }
+  }
+  throw new Error(`Unknown checklist element: ${checklistElementId}`);
 }
 
 export function allExplored(graph: Graph): boolean {
   if (graph.nodes.length === 0) return false;
-  return graph.nodes.every((n) => n.checklist.every((e) => e.explored));
+  return graph.nodes.every((n) => n.checklist.length > 0 && n.checklist.every((e) => e.explored));
 }
 
 export function serialize(graph: Graph): string {

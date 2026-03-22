@@ -2,6 +2,11 @@ import { tool } from "ai";
 import { z } from "zod/v4";
 import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
 
+interface AddNodeResult {
+  id: string;
+  checklist: { id: string; label: string }[];
+}
+
 export interface Pricing {
   inputPerMToken: number;
   outputPerMToken: number;
@@ -19,15 +24,34 @@ export function createTools(graph: Graph) {
   return {
     addNode: tool({
       description:
-        "Register a new view in the graph. Call this when the current screenshot shows a view not yet in the graph. Returns the new node's ID.",
+        "Register a new view in the graph. Call this when the current screenshot shows a view not yet in the graph. " +
+        "Also populates the node's exploration checklist and optionally records the incoming edge. " +
+        "Returns the new node's ID and checklist element IDs.",
       inputSchema: z.object({
-        description: z.string().describe(
-          "Description of the view. Capture: the screen title or header text, " +
-            "all visible interactive elements (buttons, tabs, inputs, list items), " +
-            "and any overlays such as modals, bottom sheets, or dialogs.", // TODO
-        ),
+        description: z
+          .string()
+          .describe(
+            "Description of the view. Capture: the screen title or header text, " +
+              "all visible interactive elements (buttons, tabs, inputs, list items). ",
+          ),
+        checklist: z
+          .array(z.string())
+          .min(1)
+          .describe("Interactive elements to explore on this view"),
+        from: z.string().optional().describe("Source node ID if navigated here from another view"),
+        action: z
+          .string()
+          .optional()
+          .describe("What caused the transition (e.g. \"Tapped 'Settings'\")"),
       }),
-      execute: ({ description }) => Promise.resolve(addNode(graph, description)),
+      execute: ({ description, checklist, from, action }): Promise<AddNodeResult> => {
+        const id = addNode(graph, description);
+        const checklistElements = addChecklistElements(graph, id, checklist);
+        if (from && action) {
+          addEdge(graph, from, id, action);
+        }
+        return Promise.resolve({ id, checklist: checklistElements });
+      },
     }),
 
     addEdge: tool({
@@ -44,41 +68,22 @@ export function createTools(graph: Graph) {
     }),
 
     tap: tool({
-      description: "Tap an interactive element on screen by its index from the element list.",
+      description:
+        "Tap an interactive element on screen by its index from the element list. " +
+        "Optionally marks a checklist element as explored.",
       inputSchema: z.object({
         elementIndex: z
           .number()
           .describe("Index of the element to tap from the interactive elements list"),
-      }),
-      execute: () => Promise.resolve("ok"),
-    }),
-
-    addChecklistElements: tool({
-      description:
-        "Add interactive elements to a node's exploration checklist. Call this right after creating a node to register all tappable elements that should be explored on that view.",
-      inputSchema: z.object({
-        nodeId: z.string().describe("The node ID to add checklist elements to (e.g. view_0)"),
-        elements: z
-          .array(z.string())
-          .describe("Labels of interactive elements to explore on this view"),
-      }),
-      execute: ({ nodeId, elements }) => {
-        addChecklistElements(graph, nodeId, elements);
-        return Promise.resolve("ok");
-      },
-    }),
-
-    markExplored: tool({
-      description:
-        "Mark a checklist element as explored. Call this after you have tapped an element and observed the result.",
-      inputSchema: z.object({
-        nodeId: z.string().describe("The node ID containing the element (e.g. view_0)"),
-        elementLabel: z
+        checklistElementId: z
           .string()
-          .describe("Exact label of the checklist element to mark as explored"),
+          .optional()
+          .describe("Checklist element ID this tap explores. When provided, marks it as explored."),
       }),
-      execute: ({ nodeId, elementLabel }) => {
-        markExplored(graph, nodeId, elementLabel);
+      execute: ({ checklistElementId }) => {
+        if (checklistElementId) {
+          markExplored(graph, checklistElementId);
+        }
         return Promise.resolve("ok");
       },
     }),
@@ -101,15 +106,12 @@ Do NOT add a new node when:
 - Content refreshes but the layout and available interactions stay the same
 
 ## Notes
-1. Each turn, you may call at most ONE tap.
-2. Always add nodes, edges, and checklist updates first, before tap.
-3. Screenshots from older turns are truncated.
+1. Each turn, you may call at most one tap.
+2. Screenshots from older turns are truncated.
+3. Aim to call tools in parallel. For example, you may often add a node and tap in the same turn.
 
-## Checklist
-- After creating a node with addNode, immediately call addChecklistElements to register all interactive elements visible on that view.
-- After tapping an element and observing the result, call markExplored to mark it as done.
-- Exploration ends automatically when every checklist element on every node is marked explored.
-
+## Checklist 
+Exploration ends automatically when every checklist element is marked explored.
 If a checklist element is no longer viable, you may discard it by marking as explored.
 
 ## Strategy

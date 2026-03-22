@@ -119,16 +119,18 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       await writeFile("output/graph.json", serialize(graph));
 
       // Execute tap actions
+      let tapped = false;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
             const args = tc.input as { elementIndex: number };
             await tapElement(browser, elements, args.elementIndex);
+            tapped = true;
           }
         }
       }
 
-      if (allExplored(graph)) {
+      if (!tapped && allExplored(graph)) {
         console.log("--- Exploration complete (all checklist elements explored) ---");
         break;
       }
