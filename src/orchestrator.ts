@@ -40,11 +40,11 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   await rm("output", { recursive: true, force: true });
   await mkdir("output/screenshots", { recursive: true });
 
-  console.log("\nStarting exploration...\n\n");
+  console.log("\nStarting exploration...");
 
   try {
     while (step < maxSteps) {
-      console.log(`--- Step ${String(step + 1)}/${String(maxSteps)} ---`);
+      console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
 
       const elementListText = formatElementList(elements);
       const prevNodeCount = graph.nodes.length;
@@ -101,13 +101,15 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       if (result.reasoningText) console.log(result.reasoningText);
       if (result.text) console.log(result.text);
 
-      const allToolCalls = result.steps.flatMap((s) => s.toolCalls);
-      if (allToolCalls.length > 0) {
-        const formatted = allToolCalls
-          .map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`)
-          .join(", ");
-        console.log(`Tools (${String(allToolCalls.length)}): ${formatted}`);
+      for (const s of result.steps) {
+        if (s.toolCalls.length > 0) {
+          const formatted = s.toolCalls
+            .map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`)
+            .join(", ");
+          console.log(formatted);
+        }
       }
+      const allToolCalls = result.steps.flatMap((s) => s.toolCalls);
 
       // Save screenshots for any new nodes created this step
       for (let i = prevNodeCount; i < graph.nodes.length; i++) {
@@ -140,7 +142,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       prevResponseMessages = result.response.messages;
 
       // Wait for UI to settle
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       [screenshot, elements] = await Promise.all([
         takeScreenshot(browser),

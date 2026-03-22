@@ -48,7 +48,7 @@
           style: {
             "width": 120,
             "height": 240,
-            "background-image": (el) => `${BASE}/screenshots/${el.id()}.png`,
+            "background-image": (el) => `${BASE}/screenshots/${el.id()}.png?t=${el.data('ts')}`,
             "background-fit": "cover",
             "background-color": "#2a2a4a",
             "border-width": 2,
@@ -129,7 +129,15 @@
     async function poll() {
       try {
         const res = await fetch(`${BASE}/graph.json?t=${Date.now()}`);
-        if (!res.ok) return;
+        if (!res.ok) {
+          if (knownNodes.size > 0) {
+            cy.elements().remove();
+            knownNodes.clear();
+            knownEdges.clear();
+            statusEl.textContent = "Waiting for new run...";
+          }
+          return;
+        }
         const graph = await res.json();
         let added = false;
         let latestNodeId = null;
@@ -143,6 +151,7 @@
               id: node.id,
               summary: node.summary,
               shortLabel: truncate(node.summary),
+              ts: Date.now(),
             },
           });
           added = true;
@@ -158,29 +167,24 @@
         }
 
         if (added) {
-          const layout = cy.layout({
+          cy.layout({
             name: "dagre",
             rankDir: "LR",
             nodeSep: 60,
             rankSep: 140,
-            animate: true,
-            animationDuration: 300,
-          });
+            animate: false,
+            fit: !isLive,
+          }).run();
 
           if (isLive && latestNodeId) {
-            layout.on("layoutstop", () => {
-              const node = cy.getElementById(latestNodeId);
-              if (node.length) {
-                cy.animate({
-                  center: { eles: node },
-                  zoom: 0.8,
-                  duration: 300,
-                });
-              }
-            });
+            const node = cy.getElementById(latestNodeId);
+            if (node.length) {
+              cy.animate({
+                center: { eles: node },
+                duration: 300,
+              });
+            }
           }
-
-          layout.run();
         }
 
         statusEl.textContent = `${knownNodes.size} nodes, ${knownEdges.size} edges`;
@@ -191,7 +195,7 @@
 
     poll();
     if (isLive) {
-      setInterval(poll, 200);
+      setInterval(poll, 400);
     }
   </script>
 </body>

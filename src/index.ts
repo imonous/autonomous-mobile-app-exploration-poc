@@ -5,7 +5,7 @@ const modelId = "gemini-3-flash-preview";
 const model = google(modelId);
 
 await explore({
-  maxSteps: 10,
+  maxSteps: 20,
   model,
   modelId,
 });

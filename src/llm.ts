@@ -31,18 +31,25 @@ export function createTools(graph: Graph) {
         description: z
           .string()
           .describe(
-            "Description of the view. Capture: the screen title or header text, " +
-              "all visible interactive elements (buttons, tabs, inputs, list items). ",
+            "Description of the view. Capture: the screen title/header, the types of UI components present " +
+              "(buttons, tabs, inputs, lists), and the overall layout structure. " +
+              "NEVER include displayed values, counts, text content, or data shown on screen " +
+              "(e.g. 'Stopwatch screen with circular time display and start button' " +
+              "NOT 'Stopwatch screen with 00:00.00 display').",
           ),
         checklist: z
           .array(z.string())
           .min(1)
-          .describe("Interactive elements to explore on this view"),
+          .describe("Interactive elements to explore on this view. Only include elements currently visible on screen — the explorer cannot scroll. Use structural labels, not runtime values."),
         from: z.string().optional().describe("Source node ID if navigated here from another view"),
         action: z
           .string()
           .optional()
-          .describe("What caused the transition (e.g. \"Tapped 'Settings'\")"),
+          .describe(
+            "Human-readable label for the action, without context-specific details like element indices. " +
+              "No runtime-specific values like times, amounts, or counts. " +
+              "E.g. \"Tapped 'Settings'\"",
+          ),
       }),
       execute: ({ description, checklist, from, action }): Promise<AddNodeResult> => {
         const id = addNode(graph, description);
@@ -59,7 +66,13 @@ export function createTools(graph: Graph) {
       inputSchema: z.object({
         from: z.string().describe("Source node ID (e.g. view_0)"),
         to: z.string().describe("Destination node ID (e.g. view_1)"),
-        action: z.string().describe("What caused the transition (e.g. \"Tapped 'Timer' tab\")"),
+        action: z
+          .string()
+          .describe(
+            "Human-readable label for the action, without context-specific details like element indices. " +
+              "No runtime-specific values like times, amounts, or counts. " +
+              "E.g. \"Tapped 'Timer' tab\"",
+          ),
       }),
       execute: ({ from, to, action }) => {
         addEdge(graph, from, to, action);
@@ -101,14 +114,15 @@ Add a new node when:
 - A menu or dropdown opens revealing new interactive elements
 
 Do NOT add a new node when:
-- A text field value changes
+- Some value field changes (e.g. "00:00" -> "00:30" should NOT yield a new node), because it's a minor content change
 - A loading spinner appears/disappears
 - Content refreshes but the layout and available interactions stay the same
 
 ## Notes
 1. Each turn, you may call at most one tap.
 2. Screenshots from older turns are truncated.
-3. Aim to call tools in parallel. For example, you may often add a node and tap in the same turn.
+3. addNode already records the incoming edge — only use addEdge for edges between existing nodes.
+4. When you navigate back to an already-known view, use addEdge to record the backward transition.
 
 ## Checklist 
 Exploration ends automatically when every checklist element is marked explored.
@@ -116,4 +130,7 @@ If a checklist element is no longer viable, you may discard it by marking as exp
 
 ## Strategy
 - Use depth-first exploration: when you reach a new view, go deeper before exploring siblings.
-- Backtrack when you hit a dead end or an already-known view.`;
+- When backtracking, always return to the nearest node with unexplored checklist elements before moving to a different branch.
+- Backtrack when you hit a dead end or an already-known view.
+
+Such a strategy will yield best results.`;
