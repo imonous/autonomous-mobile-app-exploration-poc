@@ -101,6 +101,12 @@ function buildLabel(el: Element): string {
   const parts = [text, contentDesc].filter(Boolean);
   if (parts.length > 0) return parts.join(" — ");
 
+  // Clickable containers (menu items, list rows) often have visible text in child elements
+  const childTexts = Array.from(el.getElementsByTagName("*"))
+    .map((c) => c.getAttribute("text") ?? "")
+    .filter(Boolean);
+  if (childTexts.length > 0) return childTexts.join(" · ");
+
   const resourceId = el.getAttribute("resource-id") ?? "";
   if (resourceId) {
     const segments = resourceId.split("/");
