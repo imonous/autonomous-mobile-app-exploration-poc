@@ -11,5 +11,11 @@ await explore({
   maxSteps: 500,
   model,
   modelId,
-  excludeElements: ["Add new", "Google Assistant Routine", "Screen saver"],
+  // The embedded apps for some reason don't get prevented by pin
+  excludeElements: [
+    "Add new", // Opens Files in embedded mode
+    "Google Assistant Routine", // Opens another app in embedded mode
+    "Screen saver", // Results in a screan with 0 interaction
+    "Help", // Opens some help center in embedded mode
+  ],
 });

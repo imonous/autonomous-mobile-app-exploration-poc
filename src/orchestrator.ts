@@ -7,6 +7,7 @@ import {
   getInteractiveElements,
   formatElementList,
   tapElement,
+  pressBack,
 } from "./device.js";
 import { createTools, DEVICE_TOOL_NAMES, SYSTEM_PROMPT, MODEL_PRICING } from "./llm.js";
 import { env } from "./env.js";
@@ -52,6 +53,18 @@ export async function explore({
   try {
     while (step < maxSteps) {
       console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
+
+      if (elements.length === 0) {
+        console.log("No interactive elements found — pressing back to dismiss");
+        await pressBack(browser);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        [screenshot, elements] = await Promise.all([
+          takeScreenshot(browser),
+          getInteractiveElements(browser),
+        ]);
+        step++;
+        continue;
+      }
 
       const elementListText = formatElementList(elements, excludeElements);
       const prevNodeCount = graph.nodes.length;
