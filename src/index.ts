@@ -11,5 +11,5 @@ await explore({
   maxSteps: 20,
   model,
   modelId,
-  excludeElements: ["Add new", "Google Assistant Routine"],
+  excludeElements: ["Add new", "Google Assistant Routine", "Screen saver"],
 });

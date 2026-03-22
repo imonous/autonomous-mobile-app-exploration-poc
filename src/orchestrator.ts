@@ -117,11 +117,7 @@ export async function explore({
       totalThinkingTokens += thinkingTokens;
 
       if (result.reasoningText) {
-        const prefixed = result.reasoningText
-          .split("\n")
-          .map((line) => `│ ${line}`)
-          .join("\n");
-        console.log(`\x1b[2m${prefixed}\x1b[0m`);
+        console.log(`\x1b[2m${result.reasoningText}\x1b[0m`);
       }
       if (result.text) console.log(result.text);
 
