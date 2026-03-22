@@ -1,7 +1,14 @@
 import { tool } from "ai";
 import dedent from "dedent";
 import { z } from "zod/v4";
-import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
+import {
+  addNode,
+  addEdge,
+  addChecklistElements,
+  markExplored,
+  allExplored,
+  type Graph,
+} from "./graph.js";
 
 interface AddNodeResult {
   id: string;
@@ -112,6 +119,21 @@ export function createTools(graph: Graph) {
       }),
       execute: ({ checklistElementId }) => {
         if (checklistElementId) markExplored(graph, checklistElementId);
+        return Promise.resolve("ok");
+      },
+    }),
+
+    exit: tool({
+      description:
+        "Call when you are done exploring the app and have completed all checklist entries.",
+      inputSchema: z.object({}),
+      execute: () => {
+        if (!allExplored(graph)) {
+          throw new Error(
+            "You must complete all checklist entries before exiting. " +
+              "If there's any you can't reach, you must still mark them as completed before exiting.",
+          );
+        }
         return Promise.resolve("ok");
       },
     }),

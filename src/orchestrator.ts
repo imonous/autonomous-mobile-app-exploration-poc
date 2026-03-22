@@ -130,7 +130,11 @@ export async function explore({
         system: SYSTEM_PROMPT,
         messages,
         tools,
-        stopWhen: [...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)), stepCountIs(10)],
+        stopWhen: [
+          ...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)),
+          hasToolCall("exit"),
+          stepCountIs(10),
+        ],
         providerOptions: {
           google: {
             thinkingConfig: {
