@@ -48,13 +48,13 @@ export function createTools(
               "(e.g. 'Stopwatch screen with circular time display and start button' " +
               "NOT 'Stopwatch screen with 00:00.00 display').",
           ),
-        checklist: z.array(z.string()).min(1).describe(dedent`
-            Your exploration plan for this view.
+        checklist: z.record(z.string(), z.string()).describe(dedent`
+            Your exploration plan for this view, keyed by element index.
 
             Only add elements from the interactive elements list — the screenshot is
             for visual reference only, but the interactive elements list is what you
-            can actually interact with. Each checklist entry must correspond to an
-            element in that list.
+            can actually interact with. Each key must be an element index from that
+            list, and each value a human-readable label for it.
 
             Only add elements that could navigate to a new view. Skip elements that
             just change values in place (toggles, sliders, text inputs). If several
@@ -73,7 +73,7 @@ export function createTools(
       }),
       execute: ({ description, checklist, from, action }): Promise<AddNodeResult> => {
         const id = addNode(graph, description);
-        const checklistElements = addChecklistElements(graph, id, checklist);
+        const checklistElements = addChecklistElements(graph, id, Object.values(checklist));
         if (from && !action) throw new Error("'action' is required when 'from' is provided");
         if (!from && action) throw new Error("'from' is required when 'action' is provided");
         if (from && action) {

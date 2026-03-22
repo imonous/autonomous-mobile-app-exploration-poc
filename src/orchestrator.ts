@@ -177,13 +177,11 @@ export async function explore({
       }
 
       // Execute tap actions (only when execute returned "ok", i.e. not excluded)
-      let tapped = false;
       for (const s of result.steps) {
         for (const tr of s.toolResults) {
           if (tr.toolName === "tap" && tr.output === "ok") {
             const args = tr.input as { elementIndex: number };
             await tapElement(browser, elements, args.elementIndex);
-            tapped = true;
           }
         }
       }
