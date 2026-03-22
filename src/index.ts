@@ -8,7 +8,7 @@ const model = google(modelId);
 // const model = anthropic(modelId);
 
 await explore({
-  maxSteps: 20,
+  maxSteps: 500,
   model,
   modelId,
   excludeElements: ["Add new", "Google Assistant Routine", "Screen saver"],

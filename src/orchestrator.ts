@@ -140,7 +140,7 @@ export async function explore({
 
       // Give the visualizer time to poll the new node before navigating away
       if (graph.nodes.length > prevNodeCount) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       // Execute tap actions (skip disabled elements)
