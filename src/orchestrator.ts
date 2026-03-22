@@ -38,6 +38,7 @@ export async function explore({
   let totalThinkingTokens = 0;
   let prevElementListText: string | null = null;
   let prevResponseMessages: ModelMessage[] | null = null;
+  let prevScreenshot: string | null = null;
   let [screenshot, elements] = await Promise.all([
     takeScreenshot(browser),
     getInteractiveElements(browser),
@@ -61,11 +62,18 @@ export async function explore({
       ];
 
       const messages: ModelMessage[] = [];
-      if (prevElementListText && prevResponseMessages) {
+      if (prevElementListText && prevResponseMessages && prevScreenshot) {
         const prevText = `[Graph truncated — see current turn for full graph.]\n\nInteractive elements:\n${prevElementListText}`;
         messages.push({
           role: "user" as const,
-          content: [{ type: "text" as const, text: prevText }],
+          content: [
+            { type: "text" as const, text: prevText },
+            {
+              type: "image" as const,
+              image: prevScreenshot,
+              mediaType: "image/png" as const,
+            },
+          ],
         });
         messages.push(...prevResponseMessages);
       }
@@ -159,6 +167,7 @@ export async function explore({
       // Save previous turn for sliding window context
       prevElementListText = elementListText;
       prevResponseMessages = result.response.messages;
+      prevScreenshot = screenshot;
 
       // Wait for UI to settle
       await new Promise((resolve) => setTimeout(resolve, 500));

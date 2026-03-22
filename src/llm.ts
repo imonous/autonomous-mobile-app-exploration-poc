@@ -128,12 +128,11 @@ Do NOT add a new node when:
 ## Before adding a node
 Before calling addNode, review every existing node in the graph. If the current screenshot matches an already-registered node (same layout and interactive elements, regardless of displayed data), do NOT create a duplicate — use addEdge to record the transition to the existing node instead.
 
-## Notes
+## Rules
 1. Each turn, you may call at most one tap.
-2. Screenshots from older turns are truncated.
-3. addNode already records the incoming edge — only use addEdge for edges between existing nodes.
-4. When you navigate back to an already-known view, use addEdge to record the backward transition.
-5. Elements marked (disabled) cannot be tapped. Mark their checklist entry as explored and move on.
+2. addNode already records the incoming edge — only use addEdge for edges between existing nodes.
+3. When you navigate back to an already-known view, use addEdge to record the backward transition.
+4. Elements marked (disabled) cannot be tapped. Mark their checklist entry as explored and move on.
 
 ## Checklist 
 Exploration ends automatically when every checklist element is marked explored.
