@@ -1,5 +1,5 @@
 import { generateText, hasToolCall, stepCountIs, type LanguageModel, type ModelMessage } from "ai";
-import { createGraph, serialize, type Graph } from "./graph.js";
+import { createGraph, serialize, allExplored, type Graph } from "./graph.js";
 import {
   createSession,
   destroySession,
@@ -30,10 +30,12 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
   let totalThinkingTokens = 0;
-  let prevUserContent: { type: "text"; text: string }[] | null = null;
+  let prevElementListText: string | null = null;
   let prevResponseMessages: ModelMessage[] | null = null;
-  let screenshot = await takeScreenshot(browser);
-  let elements = await getInteractiveElements(browser);
+  let [screenshot, elements] = await Promise.all([
+    takeScreenshot(browser),
+    getInteractiveElements(browser),
+  ]);
 
   await rm("output", { recursive: true, force: true });
   await mkdir("output/screenshots", { recursive: true });
@@ -53,11 +55,8 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       ];
 
       const messages: ModelMessage[] = [];
-      if (prevUserContent && prevResponseMessages) {
-        const prevText =
-          step >= 2
-            ? `[Earlier exploration history truncated. The graph contains all discoveries.]\n\n${prevUserContent[0].text}`
-            : prevUserContent[0].text;
+      if (prevElementListText && prevResponseMessages) {
+        const prevText = `[Graph truncated — see current turn for full graph.]\n\nInteractive elements:\n${prevElementListText}`;
         messages.push({
           role: "user" as const,
           content: [{ type: "text" as const, text: prevText }],
@@ -99,14 +98,15 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       totalOutputTokens += outputTokens;
       totalThinkingTokens += thinkingTokens;
 
-      console.log(`Reasoning:\n"""\n${result.reasoningText ?? ""}\n"""`);
-      console.log(`Text: "${result.text}"`);
+      if (result.reasoningText) console.log(result.reasoningText);
+      if (result.text) console.log(result.text);
 
       const allToolCalls = result.steps.flatMap((s) => s.toolCalls);
       if (allToolCalls.length > 0) {
-        console.log(
-          `Tool calls:\n    ${allToolCalls.map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`).join("\n    ")}`,
-        );
+        const formatted = allToolCalls
+          .map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`)
+          .join(", ");
+        console.log(`Tools (${String(allToolCalls.length)}): ${formatted}`);
       }
 
       // Save screenshots for any new nodes created this step
@@ -118,40 +118,32 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       }
       await writeFile("output/graph.json", serialize(graph));
 
-      // Check for exit across all steps
-      const exitCalled = result.steps.some((s) => s.toolCalls.some((tc) => tc.toolName === "exit"));
-      if (exitCalled) {
-        console.log("--- Exploration complete ---");
-        break;
-      }
-
       // Execute tap actions
-      let tapped = false;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
             const args = tc.input as { elementIndex: number };
             await tapElement(browser, elements, args.elementIndex);
-            const el = elements[args.elementIndex];
-            console.log(`Action: Tapped [${String(args.elementIndex)}] "${el.label}"`);
-            tapped = true;
           }
         }
       }
 
-      if (!tapped) {
-        console.log("No device action");
+      if (allExplored(graph)) {
+        console.log("--- Exploration complete (all checklist elements explored) ---");
+        break;
       }
 
       // Save previous turn for sliding window context
-      prevUserContent = currentUserContent;
+      prevElementListText = elementListText;
       prevResponseMessages = result.response.messages;
 
       // Wait for UI to settle
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      screenshot = await takeScreenshot(browser);
-      elements = await getInteractiveElements(browser);
+      [screenshot, elements] = await Promise.all([
+        takeScreenshot(browser),
+        getInteractiveElements(browser),
+      ]);
       step++;
     }
 

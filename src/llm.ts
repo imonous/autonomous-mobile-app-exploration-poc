@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod/v4";
-import { addNode, addEdge, type Graph } from "./graph.js";
+import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
 
 export interface Pricing {
   inputPerMToken: number;
@@ -12,7 +12,7 @@ export const MODEL_PRICING: Record<string, Pricing> = {
   "gemini-3-flash-preview": { inputPerMToken: 0.5, outputPerMToken: 3.0, thinkingPerMToken: 3.0 },
 };
 
-export const DEVICE_TOOL_NAMES = ["tap", "exit"] as const;
+export const DEVICE_TOOL_NAMES = ["tap"] as const;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function createTools(graph: Graph) {
@@ -53,11 +53,34 @@ export function createTools(graph: Graph) {
       execute: () => Promise.resolve("ok"),
     }),
 
-    exit: tool({
+    addChecklistElements: tool({
       description:
-        "Signal that exploration is complete. Call this when you believe all reachable views and transitions have been discovered.",
-      inputSchema: z.object({}),
-      execute: () => Promise.resolve("ok"),
+        "Add interactive elements to a node's exploration checklist. Call this right after creating a node to register all tappable elements that should be explored on that view.",
+      inputSchema: z.object({
+        nodeId: z.string().describe("The node ID to add checklist elements to (e.g. view_0)"),
+        elements: z
+          .array(z.string())
+          .describe("Labels of interactive elements to explore on this view"),
+      }),
+      execute: ({ nodeId, elements }) => {
+        addChecklistElements(graph, nodeId, elements);
+        return Promise.resolve("ok");
+      },
+    }),
+
+    markExplored: tool({
+      description:
+        "Mark a checklist element as explored. Call this after you have tapped an element and observed the result.",
+      inputSchema: z.object({
+        nodeId: z.string().describe("The node ID containing the element (e.g. view_0)"),
+        elementLabel: z
+          .string()
+          .describe("Exact label of the checklist element to mark as explored"),
+      }),
+      execute: ({ nodeId, elementLabel }) => {
+        markExplored(graph, nodeId, elementLabel);
+        return Promise.resolve("ok");
+      },
     }),
   };
 }
@@ -78,11 +101,17 @@ Do NOT add a new node when:
 - Content refreshes but the layout and available interactions stay the same
 
 ## Notes
-1. Each turn, you may call at most ONE device action (tap, exit).
-2. Always add nodes and edges first, before taking a device action (tap, exit).
+1. Each turn, you may call at most ONE tap.
+2. Always add nodes, edges, and checklist updates first, before tap.
 3. Screenshots from older turns are truncated.
+
+## Checklist
+- After creating a node with addNode, immediately call addChecklistElements to register all interactive elements visible on that view.
+- After tapping an element and observing the result, call markExplored to mark it as done.
+- Exploration ends automatically when every checklist element on every node is marked explored.
+
+If a checklist element is no longer viable, you may discard it by marking as explored.
 
 ## Strategy
 - Use depth-first exploration: when you reach a new view, go deeper before exploring siblings.
-- Backtrack when you hit a dead end or an already-known view.
-- When you have thoroughly explored all reachable views, call exit.`;
+- Backtrack when you hit a dead end or an already-known view.`;
