@@ -51,6 +51,7 @@ export async function tap(browser: WebdriverIO.Browser, x: number, y: number): P
     .pause(50)
     .up()
     .perform();
+  await browser.releaseActions();
 }
 
 export async function pressBack(browser: WebdriverIO.Browser): Promise<void> {
@@ -76,6 +77,7 @@ export async function scroll(
     .move({ x: centerX, y: endY, duration: 300 })
     .up()
     .perform();
+  await browser.releaseActions();
 }
 
 export async function getScreenSize(browser: WebdriverIO.Browser): Promise<ScreenSize> {

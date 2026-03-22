@@ -109,8 +109,6 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
           console.log(formatted);
         }
       }
-      const allToolCalls = result.steps.flatMap((s) => s.toolCalls);
-
       // Save screenshots for any new nodes created this step
       for (let i = prevNodeCount; i < graph.nodes.length; i++) {
         await writeFile(

@@ -40,7 +40,9 @@ export function createTools(graph: Graph) {
         checklist: z
           .array(z.string())
           .min(1)
-          .describe("Interactive elements to explore on this view. Only include elements currently visible on screen — the explorer cannot scroll. Use structural labels, not runtime values."),
+          .describe(
+            "Interactive elements to explore on this view. Only include elements currently visible on screen — the explorer cannot scroll. Use structural labels, not runtime values.",
+          ),
         from: z.string().optional().describe("Source node ID if navigated here from another view"),
         action: z
           .string()
