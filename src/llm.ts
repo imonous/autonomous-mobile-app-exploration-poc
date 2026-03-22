@@ -2,6 +2,7 @@ import { tool } from "ai";
 import dedent from "dedent";
 import { z } from "zod/v4";
 import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
+import type { InteractiveElement } from "./device.js";
 
 interface AddNodeResult {
   id: string;
@@ -26,7 +27,11 @@ export const MODEL_PRICING: Record<string, Pricing> = {
 export const DEVICE_TOOL_NAMES = ["tap"] as const;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function createTools(graph: Graph) {
+export function createTools(
+  graph: Graph,
+  elements: InteractiveElement[],
+  excludeLabels?: string[],
+) {
   return {
     addNode: tool({
       description:
@@ -46,12 +51,15 @@ export function createTools(graph: Graph) {
         checklist: z.array(z.string()).min(1).describe(dedent`
             Your exploration plan for this view.
 
-            Only add elements that could navigate to a new view, and only if they are
-            currently visible on screen — you cannot reach elements that are not visible.
+            Only add elements from the interactive elements list — the screenshot is
+            for visual reference only, but the interactive elements list is what you
+            can actually interact with. Each checklist entry must correspond to an
+            element in that list.
 
-            Skip elements that just change values in place (toggles, sliders, text
-            inputs). If several elements are structurally identical (e.g. a dropdown
-            with "1 min", "2 min", "3 min"), one entry is enough.
+            Only add elements that could navigate to a new view. Skip elements that
+            just change values in place (toggles, sliders, text inputs). If several
+            elements are structurally identical (e.g. a dropdown with "1 min",
+            "2 min", "3 min"), one entry is enough.
           `),
         from: z.string().optional().describe("Source node ID if navigated here from another view"),
         action: z
@@ -107,10 +115,10 @@ export function createTools(graph: Graph) {
           .optional()
           .describe("Checklist element ID this tap explores. When provided, marks it as explored."),
       }),
-      execute: ({ checklistElementId }) => {
-        if (checklistElementId) {
-          markExplored(graph, checklistElementId);
-        }
+      execute: ({ elementIndex, checklistElementId }) => {
+        const isExcluded = excludeLabels?.some((ex) => elements[elementIndex]?.label.includes(ex));
+        if (isExcluded) return Promise.resolve("error: element not available");
+        if (checklistElementId) markExplored(graph, checklistElementId);
         return Promise.resolve("ok");
       },
     }),

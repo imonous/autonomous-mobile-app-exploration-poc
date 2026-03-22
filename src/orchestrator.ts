@@ -31,7 +31,6 @@ export async function explore({
     | undefined;
   const browser = await createSession(env.APPIUM_URL);
   const graph = createGraph();
-  const tools = createTools(graph);
 
   let step = 0;
   let totalInputTokens = 0;
@@ -69,6 +68,7 @@ export async function explore({
         continue;
       }
 
+      const tools = createTools(graph, elements, excludeElements);
       const elementListText = formatElementList(elements, excludeElements);
       const prevNodeCount = graph.nodes.length;
 
@@ -176,12 +176,12 @@ export async function explore({
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      // Execute tap actions
+      // Execute tap actions (only when execute returned "ok", i.e. not excluded)
       let tapped = false;
       for (const s of result.steps) {
-        for (const tc of s.toolCalls) {
-          if (tc.toolName === "tap") {
-            const args = tc.input as { elementIndex: number };
+        for (const tr of s.toolResults) {
+          if (tr.toolName === "tap" && tr.output === "ok") {
+            const args = tr.input as { elementIndex: number };
             await tapElement(browser, elements, args.elementIndex);
             tapped = true;
           }
