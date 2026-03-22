@@ -137,16 +137,12 @@ export async function getInteractiveElements(
   return elements;
 }
 
-export function formatElementList(
-  elements: InteractiveElement[],
-  excludeLabels?: string[],
-): string {
+export function formatElementList(elements: InteractiveElement[]): string {
   return elements
-    .map((el, i) => {
-      if (excludeLabels?.some((ex) => el.label.includes(ex))) return null;
-      return `[${String(i)}] "${el.label}" [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`;
-    })
-    .filter(Boolean)
+    .map(
+      (el, i) =>
+        `[${String(i)}] "${el.label}" [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`,
+    )
     .join("\n");
 }
 

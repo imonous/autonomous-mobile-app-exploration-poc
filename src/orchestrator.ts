@@ -68,8 +68,11 @@ export async function explore({
         continue;
       }
 
-      const tools = createTools(graph, elements, excludeElements);
-      const elementListText = formatElementList(elements, excludeElements);
+      const visible = excludeElements
+        ? elements.filter((el) => !excludeElements.some((ex) => el.label.includes(ex)))
+        : elements;
+      const tools = createTools(graph);
+      const elementListText = formatElementList(visible);
       const prevNodeCount = graph.nodes.length;
 
       const currentText = `Current graph:\n${serialize(graph)}\n\nInteractive elements:\n${elementListText}`;
@@ -176,12 +179,16 @@ export async function explore({
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      // Execute tap actions (only when execute returned "ok", i.e. not excluded)
+      // Execute tap actions
       for (const s of result.steps) {
         for (const tr of s.toolResults) {
           if (tr.toolName === "tap" && tr.output === "ok") {
             const args = tr.input as { elementIndex: number };
-            await tapElement(browser, elements, args.elementIndex);
+            try {
+              await tapElement(browser, visible, args.elementIndex);
+            } catch (e) {
+              console.error(`Tap failed: ${(e as Error).message}`);
+            }
           }
         }
       }

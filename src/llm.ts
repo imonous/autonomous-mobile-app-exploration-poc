@@ -2,7 +2,6 @@ import { tool } from "ai";
 import dedent from "dedent";
 import { z } from "zod/v4";
 import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
-import type { InteractiveElement } from "./device.js";
 
 interface AddNodeResult {
   id: string;
@@ -27,11 +26,7 @@ export const MODEL_PRICING: Record<string, Pricing> = {
 export const DEVICE_TOOL_NAMES = ["tap"] as const;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function createTools(
-  graph: Graph,
-  elements: InteractiveElement[],
-  excludeLabels?: string[],
-) {
+export function createTools(graph: Graph) {
   return {
     addNode: tool({
       description:
@@ -115,9 +110,7 @@ export function createTools(
           .optional()
           .describe("Checklist element ID this tap explores. When provided, marks it as explored."),
       }),
-      execute: ({ elementIndex, checklistElementId }) => {
-        const isExcluded = excludeLabels?.some((ex) => elements[elementIndex]?.label.includes(ex));
-        if (isExcluded) return Promise.resolve("error: element not available");
+      execute: ({ checklistElementId }) => {
         if (checklistElementId) markExplored(graph, checklistElementId);
         return Promise.resolve("ok");
       },
