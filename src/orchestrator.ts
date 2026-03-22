@@ -37,9 +37,11 @@ export async function explore({
   let totalInputTokens = 0;
   let totalOutputTokens = 0;
   let totalThinkingTokens = 0;
-  let prevElementListText: string | null = null;
-  let prevResponseMessages: ModelMessage[] | null = null;
-  let prevScreenshot: string | null = null;
+  interface HistoryEntry {
+    responseMessages: ModelMessage[];
+    screenshot: string;
+  }
+  const history: HistoryEntry[] = [];
   let [screenshot, elements] = await Promise.all([
     takeScreenshot(browser),
     getInteractiveElements(browser),
@@ -75,21 +77,38 @@ export async function explore({
       ];
 
       const messages: ModelMessage[] = [];
-      if (prevElementListText && prevResponseMessages && prevScreenshot) {
-        const prevText = `[Graph truncated — see current turn for full graph.]\n\nInteractive elements:\n${prevElementListText}`;
+
+      // Sentinel for anything older than our window
+      if (history.length > 4) {
         messages.push({
           role: "user" as const,
-          content: [
-            { type: "text" as const, text: prevText },
-            {
-              type: "image" as const,
-              image: prevScreenshot,
-              mediaType: "image/png" as const,
-            },
-          ],
+          content: [{ type: "text" as const, text: "[History truncated]" }],
         });
-        messages.push(...prevResponseMessages);
       }
+
+      // Past turns (up to last 4)
+      const window = history.slice(-4);
+      for (let i = 0; i < window.length; i++) {
+        const entry = window[i];
+        const isLatest = i === window.length - 1;
+
+        const userContent: (
+          | { type: "text"; text: string }
+          | { type: "image"; image: string; mediaType: "image/png" }
+        )[] = [{ type: "text" as const, text: "[Truncated]" }];
+        if (isLatest) {
+          userContent.push({
+            type: "image" as const,
+            image: entry.screenshot,
+            mediaType: "image/png" as const,
+          });
+        }
+
+        messages.push({ role: "user" as const, content: userContent });
+        messages.push(...entry.responseMessages);
+      }
+
+      // Current turn — full graph + elements + screenshot
       messages.push({
         role: "user" as const,
         content: [
@@ -178,10 +197,11 @@ export async function explore({
         break;
       }
 
-      // Save previous turn for sliding window context
-      prevElementListText = elementListText;
-      prevResponseMessages = result.response.messages;
-      prevScreenshot = screenshot;
+      // Save turn for sliding window context
+      history.push({
+        responseMessages: result.response.messages,
+        screenshot,
+      });
 
       // Wait for UI to settle
       await new Promise((resolve) => setTimeout(resolve, 500));
