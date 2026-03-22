@@ -33,8 +33,11 @@ export function addNode(graph: Graph, summary: string): string {
 
 export function addEdge(graph: Graph, from: string, to: string, action: string): void {
   const nodeIds = new Set(graph.nodes.map((n) => n.id));
+  if (from === to) throw new Error(`Self-loop not allowed: '${from}'`);
   if (!nodeIds.has(from)) throw new Error(`Unknown node: ${from}`);
   if (!nodeIds.has(to)) throw new Error(`Unknown node: ${to}`);
+  if (graph.edges.some((e) => e.from === from && e.to === to))
+    throw new Error(`Edge already exists from '${from}' to '${to}' — no need to record alternative paths between connected nodes`);
   graph.edges.push({ from, to, action });
 }
 

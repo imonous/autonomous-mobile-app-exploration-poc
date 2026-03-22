@@ -16,9 +16,15 @@ interface ExploreOptions {
   maxSteps: number;
   model: LanguageModel;
   modelId: string;
+  excludeElements?: string[];
 }
 
-export async function explore({ maxSteps, model, modelId }: ExploreOptions): Promise<Graph> {
+export async function explore({
+  maxSteps,
+  model,
+  modelId,
+  excludeElements,
+}: ExploreOptions): Promise<Graph> {
   const pricing = MODEL_PRICING[modelId] as
     | { inputPerMToken: number; outputPerMToken: number; thinkingPerMToken: number }
     | undefined;
@@ -34,7 +40,7 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
   let prevResponseMessages: ModelMessage[] | null = null;
   let [screenshot, elements] = await Promise.all([
     takeScreenshot(browser),
-    getInteractiveElements(browser),
+    getInteractiveElements(browser, excludeElements),
   ]);
 
   await rm("output", { recursive: true, force: true });
@@ -88,6 +94,10 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
               includeThoughts: true,
             },
           },
+          anthropic: {
+            thinking: { type: "adaptive" },
+            effort: "high",
+          },
         },
       });
 
@@ -98,7 +108,13 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       totalOutputTokens += outputTokens;
       totalThinkingTokens += thinkingTokens;
 
-      if (result.reasoningText) console.log(result.reasoningText);
+      if (result.reasoningText) {
+        const prefixed = result.reasoningText
+          .split("\n")
+          .map((line) => `│ ${line}`)
+          .join("\n");
+        console.log(`\x1b[2m${prefixed}\x1b[0m`);
+      }
       if (result.text) console.log(result.text);
 
       for (const s of result.steps) {
@@ -140,11 +156,11 @@ export async function explore({ maxSteps, model, modelId }: ExploreOptions): Pro
       prevResponseMessages = result.response.messages;
 
       // Wait for UI to settle
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       [screenshot, elements] = await Promise.all([
         takeScreenshot(browser),
-        getInteractiveElements(browser),
+        getInteractiveElements(browser, excludeElements),
       ]);
       step++;
     }

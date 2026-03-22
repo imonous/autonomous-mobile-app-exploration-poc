@@ -15,6 +15,11 @@ export interface Pricing {
 
 export const MODEL_PRICING: Record<string, Pricing> = {
   "gemini-3-flash-preview": { inputPerMToken: 0.5, outputPerMToken: 3.0, thinkingPerMToken: 3.0 },
+  "claude-sonnet-4-6-20260217": {
+    inputPerMToken: 3.0,
+    outputPerMToken: 15.0,
+    thinkingPerMToken: 15.0,
+  },
 };
 
 export const DEVICE_TOOL_NAMES = ["tap"] as const;
@@ -120,6 +125,9 @@ Do NOT add a new node when:
 - A loading spinner appears/disappears
 - Content refreshes but the layout and available interactions stay the same
 
+## Before adding a node
+Before calling addNode, review every existing node in the graph. If the current screenshot matches an already-registered node (same layout and interactive elements, regardless of displayed data), do NOT create a duplicate — use addEdge to record the transition to the existing node instead.
+
 ## Notes
 1. Each turn, you may call at most one tap.
 2. Screenshots from older turns are truncated.
@@ -133,6 +141,4 @@ If a checklist element is no longer viable, you may discard it by marking as exp
 ## Strategy
 - Use depth-first exploration: when you reach a new view, go deeper before exploring siblings.
 - When backtracking, always return to the nearest node with unexplored checklist elements before moving to a different branch.
-- Backtrack when you hit a dead end or an already-known view.
-
-Such a strategy will yield best results.`;
+- Backtrack when you hit a dead end or an already-known view.`;

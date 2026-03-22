@@ -111,6 +111,7 @@ function buildLabel(el: Element): string {
 
 export async function getInteractiveElements(
   browser: WebdriverIO.Browser,
+  excludeLabels?: string[],
 ): Promise<InteractiveElement[]> {
   const xml = await browser.getPageSource();
   const doc = new DOMParser().parseFromString(xml, "text/xml");
@@ -125,7 +126,9 @@ export async function getInteractiveElements(
     if (!bounds) continue;
     if (bounds.left === bounds.right || bounds.top === bounds.bottom) continue;
 
-    elements.push({ label: buildLabel(el), bounds });
+    const label = buildLabel(el);
+    if (excludeLabels?.some((ex) => label.includes(ex))) continue;
+    elements.push({ label, bounds });
   }
 
   return elements;
