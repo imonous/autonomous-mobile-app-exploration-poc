@@ -1,0 +1,3035 @@
+{
+  "nodes": [
+    {
+      "id": "view_0",
+      "summary": "Alarm screen showing a list of configured alarms, a floating action button to add a new alarm, and a bottom navigation bar.",
+      "checklist": [
+        {
+          "id": "check_0",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_1",
+          "label": "3:00 AM Alarm item",
+          "explored": false
+        },
+        {
+          "id": "check_2",
+          "label": "Expand alarm",
+          "explored": true
+        },
+        {
+          "id": "check_3",
+          "label": "Toggle alarm",
+          "explored": false
+        },
+        {
+          "id": "check_4",
+          "label": "Add alarm button",
+          "explored": true
+        },
+        {
+          "id": "check_5",
+          "label": "Clock tab",
+          "explored": true
+        },
+        {
+          "id": "check_6",
+          "label": "Timer tab",
+          "explored": true
+        },
+        {
+          "id": "check_7",
+          "label": "Stopwatch tab",
+          "explored": false
+        },
+        {
+          "id": "check_8",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_1",
+      "summary": "More options menu containing application-wide settings and links.",
+      "checklist": [
+        {
+          "id": "check_9",
+          "label": "Screen saver (disabled)",
+          "explored": false
+        },
+        {
+          "id": "check_10",
+          "label": "Settings",
+          "explored": true
+        },
+        {
+          "id": "check_11",
+          "label": "Privacy policy",
+          "explored": true
+        },
+        {
+          "id": "check_12",
+          "label": "Send feedback",
+          "explored": true
+        },
+        {
+          "id": "check_13",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_2",
+      "summary": "Settings screen with sections for Clock and Alarms settings. Includes options for clock style, seconds display, home clock, silence period, and snooze length.",
+      "checklist": [
+        {
+          "id": "check_14",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_15",
+          "label": "Settings More options",
+          "explored": true
+        },
+        {
+          "id": "check_16",
+          "label": "Clock Style",
+          "explored": true
+        },
+        {
+          "id": "check_17",
+          "label": "Display time with seconds toggle",
+          "explored": true
+        },
+        {
+          "id": "check_18",
+          "label": "Automatic home clock toggle",
+          "explored": true
+        },
+        {
+          "id": "check_19",
+          "label": "Change date & time",
+          "explored": true
+        },
+        {
+          "id": "check_20",
+          "label": "Silence after",
+          "explored": true
+        },
+        {
+          "id": "check_21",
+          "label": "Snooze length",
+          "explored": true
+        },
+        {
+          "id": "check_22",
+          "label": "Alarm volume slider",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_3",
+      "summary": "Selection menu for Clock Style with options for Analog and Digital.",
+      "checklist": [
+        {
+          "id": "check_23",
+          "label": "Analog style option",
+          "explored": false
+        },
+        {
+          "id": "check_24",
+          "label": "Digital style option",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_4",
+      "summary": "Settings More options menu appearing as a popup over the Settings screen, containing links for feedback and help.",
+      "checklist": [
+        {
+          "id": "check_25",
+          "label": "Send feedback",
+          "explored": true
+        },
+        {
+          "id": "check_26",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_5",
+      "summary": "Silence after dialog with options for 1, 5, 10, 15, 20, 25 minutes or Never, and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_27",
+          "label": "1 minute option",
+          "explored": false
+        },
+        {
+          "id": "check_28",
+          "label": "5 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_29",
+          "label": "10 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_30",
+          "label": "15 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_31",
+          "label": "20 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_32",
+          "label": "25 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_33",
+          "label": "Never option",
+          "explored": false
+        },
+        {
+          "id": "check_34",
+          "label": "Cancel button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_6",
+      "summary": "Snooze length dialog with radio button options for duration in minutes and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_35",
+          "label": "10 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_36",
+          "label": "11 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_37",
+          "label": "12 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_38",
+          "label": "13 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_39",
+          "label": "14 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_40",
+          "label": "15 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_41",
+          "label": "16 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_42",
+          "label": "17 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_43",
+          "label": "18 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_44",
+          "label": "19 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_45",
+          "label": "20 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_46",
+          "label": "21 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_47",
+          "label": "22 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_48",
+          "label": "23 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_49",
+          "label": "24 minutes option",
+          "explored": false
+        },
+        {
+          "id": "check_50",
+          "label": "Cancel button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_7",
+      "summary": "Expanded view of an alarm item on the Alarm screen, displaying detailed configuration options like days of the week, ringtone, and vibration.",
+      "checklist": [
+        {
+          "id": "check_51",
+          "label": "Add label",
+          "explored": true
+        },
+        {
+          "id": "check_52",
+          "label": "Collapse alarm",
+          "explored": true
+        },
+        {
+          "id": "check_53",
+          "label": "Alarm time",
+          "explored": true
+        },
+        {
+          "id": "check_54",
+          "label": "Sunday",
+          "explored": true
+        },
+        {
+          "id": "check_55",
+          "label": "Monday",
+          "explored": true
+        },
+        {
+          "id": "check_56",
+          "label": "Tuesday",
+          "explored": true
+        },
+        {
+          "id": "check_57",
+          "label": "Wednesday",
+          "explored": true
+        },
+        {
+          "id": "check_58",
+          "label": "Thursday",
+          "explored": true
+        },
+        {
+          "id": "check_59",
+          "label": "Friday",
+          "explored": true
+        },
+        {
+          "id": "check_60",
+          "label": "Saturday",
+          "explored": true
+        },
+        {
+          "id": "check_61",
+          "label": "Pause alarm",
+          "explored": true
+        },
+        {
+          "id": "check_62",
+          "label": "Ringtone selection",
+          "explored": true
+        },
+        {
+          "id": "check_63",
+          "label": "Vibrate toggle",
+          "explored": true
+        },
+        {
+          "id": "check_64",
+          "label": "Google Assistant Routine (disabled)",
+          "explored": false
+        },
+        {
+          "id": "check_65",
+          "label": "Delete alarm",
+          "explored": true
+        },
+        {
+          "id": "check_66",
+          "label": "Add alarm FAB",
+          "explored": false
+        },
+        {
+          "id": "check_67",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_68",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_69",
+          "label": "Stopwatch tab",
+          "explored": false
+        },
+        {
+          "id": "check_70",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_8",
+      "summary": "Dialog for adding or editing a label for an alarm, featuring a text input field and confirmation buttons.",
+      "checklist": [
+        {
+          "id": "check_71",
+          "label": "Label input",
+          "explored": false
+        },
+        {
+          "id": "check_72",
+          "label": "Cancel button",
+          "explored": true
+        },
+        {
+          "id": "check_73",
+          "label": "OK button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_9",
+      "summary": "Time picker dialog with numeric input fields for hour and minute, AM/PM selectors, and a button to switch to clock mode.",
+      "checklist": [
+        {
+          "id": "check_74",
+          "label": "Hour input",
+          "explored": true
+        },
+        {
+          "id": "check_75",
+          "label": "Minute input",
+          "explored": true
+        },
+        {
+          "id": "check_76",
+          "label": "AM selector",
+          "explored": true
+        },
+        {
+          "id": "check_77",
+          "label": "PM selector",
+          "explored": true
+        },
+        {
+          "id": "check_78",
+          "label": "Switch to clock mode button",
+          "explored": true
+        },
+        {
+          "id": "check_79",
+          "label": "Cancel button",
+          "explored": true
+        },
+        {
+          "id": "check_80",
+          "label": "OK button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_10",
+      "summary": "Time picker dialog with an analog clock face for hour and minute selection, AM/PM selectors, and a button to switch to numeric input mode.",
+      "checklist": [
+        {
+          "id": "check_81",
+          "label": "Hour display",
+          "explored": true
+        },
+        {
+          "id": "check_82",
+          "label": "Minute display",
+          "explored": true
+        },
+        {
+          "id": "check_83",
+          "label": "AM selector",
+          "explored": true
+        },
+        {
+          "id": "check_84",
+          "label": "PM selector",
+          "explored": true
+        },
+        {
+          "id": "check_85",
+          "label": "Clock face interaction",
+          "explored": true
+        },
+        {
+          "id": "check_86",
+          "label": "Switch to text input mode button",
+          "explored": true
+        },
+        {
+          "id": "check_87",
+          "label": "Cancel button",
+          "explored": true
+        },
+        {
+          "id": "check_88",
+          "label": "OK button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_11",
+      "summary": "Alarm sound selection screen with tabs for 'Sounds' and 'YouTube Music', featuring lists of available device sounds and an option to add new sounds.",
+      "checklist": [
+        {
+          "id": "check_89",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_90",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_91",
+          "label": "YouTube Music tab",
+          "explored": false
+        },
+        {
+          "id": "check_92",
+          "label": "Add new (disabled)",
+          "explored": false
+        },
+        {
+          "id": "check_93",
+          "label": "Silent sound option",
+          "explored": false
+        },
+        {
+          "id": "check_94",
+          "label": "Default (Cesium) sound option",
+          "explored": false
+        },
+        {
+          "id": "check_95",
+          "label": "Argon sound option",
+          "explored": false
+        },
+        {
+          "id": "check_96",
+          "label": "Barium sound option",
+          "explored": false
+        },
+        {
+          "id": "check_97",
+          "label": "BeeBeep Alarm sound option",
+          "explored": false
+        },
+        {
+          "id": "check_98",
+          "label": "Beep-Beep-Beep Alarm sound option",
+          "explored": false
+        },
+        {
+          "id": "check_99",
+          "label": "Buzzer Alarm sound option",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_12",
+      "summary": "More options menu for Alarm sound selection, with options to hide music services or install streaming apps.",
+      "checklist": [
+        {
+          "id": "check_100",
+          "label": "Hide YouTube Music",
+          "explored": true
+        },
+        {
+          "id": "check_101",
+          "label": "Install Pandora",
+          "explored": false
+        },
+        {
+          "id": "check_102",
+          "label": "Install Spotify",
+          "explored": false
+        },
+        {
+          "id": "check_103",
+          "label": "Install Calm",
+          "explored": false
+        },
+        {
+          "id": "check_104",
+          "label": "Send feedback",
+          "explored": false
+        },
+        {
+          "id": "check_105",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_13",
+      "summary": "Date picker dialog for scheduling an alarm, featuring a calendar view, month/year navigation, and a button to switch to text input mode.",
+      "checklist": [
+        {
+          "id": "check_106",
+          "label": "Switch to text input mode",
+          "explored": false
+        },
+        {
+          "id": "check_107",
+          "label": "Month selection",
+          "explored": false
+        },
+        {
+          "id": "check_108",
+          "label": "Previous month",
+          "explored": false
+        },
+        {
+          "id": "check_109",
+          "label": "Next month",
+          "explored": false
+        },
+        {
+          "id": "check_110",
+          "label": "Date selection",
+          "explored": false
+        },
+        {
+          "id": "check_111",
+          "label": "Cancel button",
+          "explored": true
+        },
+        {
+          "id": "check_112",
+          "label": "OK button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_14",
+      "summary": "Clock screen displaying the current local time and date, with a floating action button to add world clocks and a bottom navigation bar.",
+      "checklist": [
+        {
+          "id": "check_113",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_114",
+          "label": "Add city button",
+          "explored": true
+        },
+        {
+          "id": "check_115",
+          "label": "Alarm tab",
+          "explored": true
+        },
+        {
+          "id": "check_116",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_117",
+          "label": "Stopwatch tab",
+          "explored": false
+        },
+        {
+          "id": "check_118",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_15",
+      "summary": "City search screen with a search input field and a back button.",
+      "checklist": [
+        {
+          "id": "check_119",
+          "label": "Back button",
+          "explored": true
+        },
+        {
+          "id": "check_120",
+          "label": "Search for a city input",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_16",
+      "summary": "Timer screen with a numeric keypad (1-9, 00, 0) and backspace for setting a duration in hours, minutes, and seconds. Includes a bottom navigation bar.",
+      "checklist": [
+        {
+          "id": "check_121",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_122",
+          "label": "Keypad 1",
+          "explored": true
+        },
+        {
+          "id": "check_123",
+          "label": "Keypad 2",
+          "explored": false
+        },
+        {
+          "id": "check_124",
+          "label": "Keypad 3",
+          "explored": false
+        },
+        {
+          "id": "check_125",
+          "label": "Keypad 4",
+          "explored": false
+        },
+        {
+          "id": "check_126",
+          "label": "Keypad 5",
+          "explored": false
+        },
+        {
+          "id": "check_127",
+          "label": "Keypad 6",
+          "explored": false
+        },
+        {
+          "id": "check_128",
+          "label": "Keypad 7",
+          "explored": false
+        },
+        {
+          "id": "check_129",
+          "label": "Keypad 8",
+          "explored": false
+        },
+        {
+          "id": "check_130",
+          "label": "Keypad 9",
+          "explored": false
+        },
+        {
+          "id": "check_131",
+          "label": "Keypad 00",
+          "explored": false
+        },
+        {
+          "id": "check_132",
+          "label": "Keypad 0",
+          "explored": false
+        },
+        {
+          "id": "check_133",
+          "label": "Backspace",
+          "explored": false
+        },
+        {
+          "id": "check_134",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_135",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_136",
+          "label": "Stopwatch tab",
+          "explored": true
+        },
+        {
+          "id": "check_137",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_17",
+      "summary": "Active timer screen showing the remaining time, a progress ring, and controls to pause or add time.",
+      "checklist": [
+        {
+          "id": "check_138",
+          "label": "Stop timer",
+          "explored": true
+        },
+        {
+          "id": "check_139",
+          "label": "Pause timer",
+          "explored": true
+        },
+        {
+          "id": "check_140",
+          "label": "Reset timer (Add 1:00)",
+          "explored": false
+        },
+        {
+          "id": "check_141",
+          "label": "Delete timer",
+          "explored": false
+        },
+        {
+          "id": "check_142",
+          "label": "Add timer button",
+          "explored": false
+        },
+        {
+          "id": "check_143",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_144",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_145",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_146",
+          "label": "Stopwatch tab",
+          "explored": false
+        },
+        {
+          "id": "check_147",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_18",
+      "summary": "Paused timer screen showing the remaining time, a progress ring with a reset icon, and a 'Start' button.",
+      "checklist": [
+        {
+          "id": "check_148",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_149",
+          "label": "Delete timer",
+          "explored": true
+        },
+        {
+          "id": "check_150",
+          "label": "Reset timer",
+          "explored": false
+        },
+        {
+          "id": "check_151",
+          "label": "Start timer",
+          "explored": false
+        },
+        {
+          "id": "check_152",
+          "label": "Add timer button",
+          "explored": false
+        },
+        {
+          "id": "check_153",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_154",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_155",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_156",
+          "label": "Stopwatch tab",
+          "explored": false
+        },
+        {
+          "id": "check_157",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_19",
+      "summary": "Stopwatch screen featuring a large circular time display, a 'Start' button, and a bottom navigation bar.",
+      "checklist": [
+        {
+          "id": "check_158",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_159",
+          "label": "Start stopwatch",
+          "explored": true
+        },
+        {
+          "id": "check_160",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_161",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_162",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_163",
+          "label": "Bedtime tab",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_20",
+      "summary": "Settings screen with 'Home time zone' now visible after enabling 'Automatic home clock'.",
+      "checklist": [
+        {
+          "id": "check_164",
+          "label": "Home time zone selection",
+          "explored": true
+        },
+        {
+          "id": "check_165",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_166",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_167",
+          "label": "Clock Style",
+          "explored": false
+        },
+        {
+          "id": "check_168",
+          "label": "Display time with seconds toggle",
+          "explored": false
+        },
+        {
+          "id": "check_169",
+          "label": "Automatic home clock toggle",
+          "explored": false
+        },
+        {
+          "id": "check_170",
+          "label": "Change date & time",
+          "explored": true
+        },
+        {
+          "id": "check_171",
+          "label": "Silence after",
+          "explored": false
+        },
+        {
+          "id": "check_172",
+          "label": "Snooze length",
+          "explored": false
+        },
+        {
+          "id": "check_173",
+          "label": "Alarm volume slider",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_21",
+      "summary": "'Home time zone' selection dialog showing a scrollable list of GMT offsets and city names with radio buttons, and a 'Cancel' button.",
+      "checklist": [
+        {
+          "id": "check_174",
+          "label": "Belgrade time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_175",
+          "label": "Brussels time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_176",
+          "label": "Sarajevo time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_177",
+          "label": "W. Africa Time time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_178",
+          "label": "Windhoek time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_179",
+          "label": "Athens, Istanbul time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_180",
+          "label": "Beirut, Lebanon time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_181",
+          "label": "Cairo time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_182",
+          "label": "Helsinki time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_183",
+          "label": "Jerusalem time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_184",
+          "label": "Harare time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_185",
+          "label": "Amman, Jordan time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_186",
+          "label": "Minsk time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_187",
+          "label": "Baghdad time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_188",
+          "label": "Moscow time zone option",
+          "explored": false
+        },
+        {
+          "id": "check_189",
+          "label": "Cancel button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_22",
+      "summary": "Active stopwatch screen with elapsed time display and controls for Reset, Pause, and Lap.",
+      "checklist": [
+        {
+          "id": "check_190",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_191",
+          "label": "Reset stopwatch",
+          "explored": false
+        },
+        {
+          "id": "check_192",
+          "label": "Pause stopwatch",
+          "explored": true
+        },
+        {
+          "id": "check_193",
+          "label": "Lap stopwatch",
+          "explored": true
+        },
+        {
+          "id": "check_194",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_195",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_196",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_197",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_23",
+      "summary": "Paused stopwatch screen showing elapsed time, a list of laps, a 'Reset' button, and a 'Start' button.",
+      "checklist": [
+        {
+          "id": "check_198",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_199",
+          "label": "Reset stopwatch",
+          "explored": true
+        },
+        {
+          "id": "check_200",
+          "label": "Start stopwatch",
+          "explored": false
+        },
+        {
+          "id": "check_201",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_202",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_203",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_204",
+          "label": "Bedtime tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_24",
+      "summary": "Bedtime screen with sections for sleep schedule and sleep sounds. Includes bedtime and wake-up time settings, and controls for sleep sounds.",
+      "checklist": [
+        {
+          "id": "check_205",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_206",
+          "label": "Bedtime time selection",
+          "explored": true
+        },
+        {
+          "id": "check_207",
+          "label": "Wake-up time selection",
+          "explored": true
+        },
+        {
+          "id": "check_208",
+          "label": "Start sleep sound",
+          "explored": false
+        },
+        {
+          "id": "check_209",
+          "label": "Choose another sound",
+          "explored": false
+        },
+        {
+          "id": "check_210",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_211",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_212",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_213",
+          "label": "Stopwatch tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_25",
+      "summary": "'More options' menu on the Bedtime screen containing settings for recent activity, sleep sounds, and upcoming events, along with standard options like Settings and Privacy policy.",
+      "checklist": [
+        {
+          "id": "check_214",
+          "label": "Screen saver (disabled)",
+          "explored": false
+        },
+        {
+          "id": "check_215",
+          "label": "Settings",
+          "explored": false
+        },
+        {
+          "id": "check_216",
+          "label": "Privacy policy",
+          "explored": false
+        },
+        {
+          "id": "check_217",
+          "label": "Show recent activity",
+          "explored": true
+        },
+        {
+          "id": "check_218",
+          "label": "Hide sleep sounds",
+          "explored": false
+        },
+        {
+          "id": "check_219",
+          "label": "Show upcoming events",
+          "explored": false
+        },
+        {
+          "id": "check_220",
+          "label": "Send feedback",
+          "explored": false
+        },
+        {
+          "id": "check_221",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_26",
+      "summary": "Bedtime screen with an additional card for 'See recent bedtime activity' containing 'No thanks' and 'Continue' buttons.",
+      "checklist": [
+        {
+          "id": "check_222",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_223",
+          "label": "Bedtime time selection",
+          "explored": false
+        },
+        {
+          "id": "check_224",
+          "label": "Wake-up time selection",
+          "explored": false
+        },
+        {
+          "id": "check_225",
+          "label": "No thanks (Recent activity card)",
+          "explored": true
+        },
+        {
+          "id": "check_226",
+          "label": "Continue (Recent activity card)",
+          "explored": false
+        },
+        {
+          "id": "check_227",
+          "label": "Start sleep sound",
+          "explored": false
+        },
+        {
+          "id": "check_228",
+          "label": "Choose another sound",
+          "explored": false
+        },
+        {
+          "id": "check_229",
+          "label": "Alarm tab",
+          "explored": false
+        },
+        {
+          "id": "check_230",
+          "label": "Clock tab",
+          "explored": false
+        },
+        {
+          "id": "check_231",
+          "label": "Timer tab",
+          "explored": false
+        },
+        {
+          "id": "check_232",
+          "label": "Stopwatch tab",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_27",
+      "summary": "Bedtime configuration bottom sheet with time selection, day of week toggles, reminder notification options, and bedtime mode settings.",
+      "checklist": [
+        {
+          "id": "check_233",
+          "label": "Bedtime time selection",
+          "explored": true
+        },
+        {
+          "id": "check_234",
+          "label": "Bedtime schedule toggle",
+          "explored": true
+        },
+        {
+          "id": "check_235",
+          "label": "Sunday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_236",
+          "label": "Monday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_237",
+          "label": "Tuesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_238",
+          "label": "Wednesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_239",
+          "label": "Thursday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_240",
+          "label": "Friday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_241",
+          "label": "Saturday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_242",
+          "label": "Reminder notification settings",
+          "explored": true
+        },
+        {
+          "id": "check_243",
+          "label": "Bedtime mode settings",
+          "explored": true
+        },
+        {
+          "id": "check_244",
+          "label": "Touch outside to dismiss",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_28",
+      "summary": "Bedtime configuration bottom sheet with the schedule toggled off. Sub-settings for reminders and bedtime mode are hidden.",
+      "checklist": [
+        {
+          "id": "check_245",
+          "label": "Sunday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_246",
+          "label": "Monday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_247",
+          "label": "Tuesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_248",
+          "label": "Wednesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_249",
+          "label": "Thursday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_250",
+          "label": "Friday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_251",
+          "label": "Saturday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_252",
+          "label": "Bedtime schedule toggle",
+          "explored": true
+        },
+        {
+          "id": "check_253",
+          "label": "Bedtime time selection",
+          "explored": false
+        },
+        {
+          "id": "check_254",
+          "label": "Touch outside to dismiss",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_29",
+      "summary": "Reminder notification dialog with radio button options for notification timing before bedtime and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_255",
+          "label": "15 minutes before bedtime option",
+          "explored": false
+        },
+        {
+          "id": "check_256",
+          "label": "30 minutes before bedtime option",
+          "explored": false
+        },
+        {
+          "id": "check_257",
+          "label": "45 minutes before bedtime option",
+          "explored": false
+        },
+        {
+          "id": "check_258",
+          "label": "1 hour before bedtime option",
+          "explored": false
+        },
+        {
+          "id": "check_259",
+          "label": "Off option",
+          "explored": false
+        },
+        {
+          "id": "check_260",
+          "label": "Cancel button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_30",
+      "summary": "Bedtime mode settings screen with options to trigger based on schedule or charging, and various screen and notification filters.",
+      "checklist": [
+        {
+          "id": "check_261",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_262",
+          "label": "Bedtime mode toggle",
+          "explored": false
+        },
+        {
+          "id": "check_263",
+          "label": "Based on schedule radio button",
+          "explored": true
+        },
+        {
+          "id": "check_264",
+          "label": "While charging at bedtime radio button",
+          "explored": true
+        },
+        {
+          "id": "check_265",
+          "label": "Off radio button",
+          "explored": true
+        },
+        {
+          "id": "check_266",
+          "label": "Do Not Disturb toggle",
+          "explored": false
+        },
+        {
+          "id": "check_267",
+          "label": "Grayscale toggle",
+          "explored": false
+        },
+        {
+          "id": "check_268",
+          "label": "Keep the screen dark toggle",
+          "explored": false
+        },
+        {
+          "id": "check_269",
+          "label": "Turn off Bedtime mode at next alarm toggle",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_31",
+      "summary": "More options menu for Bedtime mode, providing links for feedback, data management, and legal information.",
+      "checklist": [
+        {
+          "id": "check_270",
+          "label": "Send feedback",
+          "explored": true
+        },
+        {
+          "id": "check_271",
+          "label": "Beta program",
+          "explored": true
+        },
+        {
+          "id": "check_272",
+          "label": "Manage your data",
+          "explored": true
+        },
+        {
+          "id": "check_273",
+          "label": "Privacy Policy",
+          "explored": true
+        },
+        {
+          "id": "check_274",
+          "label": "Terms of Service",
+          "explored": false
+        },
+        {
+          "id": "check_275",
+          "label": "Open-source licenses",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_32",
+      "summary": "Expanded Bedtime mode settings screen with specific schedule options including start/end times and day selection.",
+      "checklist": [
+        {
+          "id": "check_276",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_277",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_278",
+          "label": "Turn on now button",
+          "explored": true
+        },
+        {
+          "id": "check_279",
+          "label": "Collapse Bedtime routine card",
+          "explored": true
+        },
+        {
+          "id": "check_280",
+          "label": "Start time selection",
+          "explored": true
+        },
+        {
+          "id": "check_281",
+          "label": "End time selection",
+          "explored": true
+        },
+        {
+          "id": "check_282",
+          "label": "Sunday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_283",
+          "label": "Monday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_284",
+          "label": "Tuesday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_285",
+          "label": "Wednesday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_286",
+          "label": "Thursday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_287",
+          "label": "Friday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_288",
+          "label": "Saturday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_289",
+          "label": "Turn on while charging radio button",
+          "explored": true
+        },
+        {
+          "id": "check_290",
+          "label": "None radio button",
+          "explored": false
+        },
+        {
+          "id": "check_291",
+          "label": "Turn off Bedtime mode at next alarm toggle",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_33",
+      "summary": "Bedtime mode settings screen with 'Turn on while charging' selected. Shows 'After' and 'Before' time range selectors instead of day toggles.",
+      "checklist": [
+        {
+          "id": "check_292",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_293",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_294",
+          "label": "Turn on now button",
+          "explored": true
+        },
+        {
+          "id": "check_295",
+          "label": "Collapse Bedtime routine card",
+          "explored": false
+        },
+        {
+          "id": "check_296",
+          "label": "Use a schedule radio button",
+          "explored": false
+        },
+        {
+          "id": "check_297",
+          "label": "After time selection",
+          "explored": true
+        },
+        {
+          "id": "check_298",
+          "label": "Before time selection",
+          "explored": true
+        },
+        {
+          "id": "check_299",
+          "label": "None radio button",
+          "explored": true
+        },
+        {
+          "id": "check_300",
+          "label": "Turn off Bedtime mode at next alarm toggle",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_34",
+      "summary": "Bedtime mode settings screen with 'None' selected in the expanded Bedtime routine section. Includes 'Turn on now' button and 'Customize in Modes' section.",
+      "checklist": [
+        {
+          "id": "check_301",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_302",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_303",
+          "label": "Turn on now button",
+          "explored": false
+        },
+        {
+          "id": "check_304",
+          "label": "Collapse Bedtime routine card",
+          "explored": true
+        },
+        {
+          "id": "check_305",
+          "label": "Use a schedule radio button",
+          "explored": true
+        },
+        {
+          "id": "check_306",
+          "label": "Turn on while charging radio button",
+          "explored": false
+        },
+        {
+          "id": "check_307",
+          "label": "Turn off Bedtime mode at next alarm toggle",
+          "explored": false
+        },
+        {
+          "id": "check_308",
+          "label": "Customize in Modes",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_35",
+      "summary": "Collapsed Bedtime mode settings screen, showing the current routine status as 'None' and providing access to system mode customization.",
+      "checklist": [
+        {
+          "id": "check_309",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_310",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_311",
+          "label": "Turn on now button",
+          "explored": true
+        },
+        {
+          "id": "check_312",
+          "label": "Bedtime routine header",
+          "explored": false
+        },
+        {
+          "id": "check_313",
+          "label": "Expand Bedtime routine card",
+          "explored": true
+        },
+        {
+          "id": "check_314",
+          "label": "Customize in Modes",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_36",
+      "summary": "Manage your data screen in Digital Wellbeing, featuring toggles for device usage, bedtime sensor data, time zone history, and clock app data access.",
+      "checklist": [
+        {
+          "id": "check_315",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_316",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_317",
+          "label": "Daily device usage toggle",
+          "explored": true
+        },
+        {
+          "id": "check_318",
+          "label": "Bedtime sensor data toggle",
+          "explored": true
+        },
+        {
+          "id": "check_319",
+          "label": "Time zone history toggle",
+          "explored": true
+        },
+        {
+          "id": "check_320",
+          "label": "Clock app data toggle",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_37",
+      "summary": "More options menu on the Manage your data screen, containing a 'Send feedback' link.",
+      "checklist": [
+        {
+          "id": "check_321",
+          "label": "Send feedback",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_38",
+      "summary": "Confirmation dialog asking to 'Turn off usage access?' for Digital Wellbeing data, with Cancel and Turn off in Settings options.",
+      "checklist": [
+        {
+          "id": "check_322",
+          "label": "Cancel button",
+          "explored": true
+        },
+        {
+          "id": "check_323",
+          "label": "Turn off in Settings button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_39",
+      "summary": "Confirmation dialog asking to 'Turn off access to sensor data?', with Cancel and Turn off buttons.",
+      "checklist": [
+        {
+          "id": "check_324",
+          "label": "Cancel button",
+          "explored": false
+        },
+        {
+          "id": "check_325",
+          "label": "Turn off button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_40",
+      "summary": "Confirmation dialog asking 'Turn off access to time zone history?', with 'Cancel' and 'Turn off' buttons.",
+      "checklist": [
+        {
+          "id": "check_326",
+          "label": "Cancel button",
+          "explored": false
+        },
+        {
+          "id": "check_327",
+          "label": "Turn off button",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_41",
+      "summary": "Bedtime mode screen when active, showing 'Turn off for now' and 'Pause for 30 min' buttons with a dark theme.",
+      "checklist": [
+        {
+          "id": "check_328",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_329",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_330",
+          "label": "Turn off for now",
+          "explored": true
+        },
+        {
+          "id": "check_331",
+          "label": "Pause for 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_332",
+          "label": "Expand Bedtime routine card",
+          "explored": true
+        },
+        {
+          "id": "check_333",
+          "label": "Customize in Modes",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_42",
+      "summary": "Active Bedtime mode screen with the Bedtime routine card expanded. Displays 'Turn off for now' and 'Pause for 30 min' buttons, and routine configuration options (schedule, times, days) under a dark theme.",
+      "checklist": [
+        {
+          "id": "check_334",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_335",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_336",
+          "label": "Turn off for now",
+          "explored": false
+        },
+        {
+          "id": "check_337",
+          "label": "Pause for 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_338",
+          "label": "Collapse the card Bedtime routine",
+          "explored": true
+        },
+        {
+          "id": "check_339",
+          "label": "Use a schedule",
+          "explored": false
+        },
+        {
+          "id": "check_340",
+          "label": "Start · 11:00 PM",
+          "explored": false
+        },
+        {
+          "id": "check_341",
+          "label": "End · 7:00 AM",
+          "explored": false
+        },
+        {
+          "id": "check_342",
+          "label": "Sunday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_343",
+          "label": "Monday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_344",
+          "label": "Tuesday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_345",
+          "label": "Wednesday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_346",
+          "label": "Thursday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_347",
+          "label": "Friday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_348",
+          "label": "Saturday toggle",
+          "explored": false
+        },
+        {
+          "id": "check_349",
+          "label": "Turn on while charging",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_43",
+      "summary": "Bedtime mode screen when paused. It shows 'Add 30 min' and 'Resume now' buttons within a card indicating when it will resume. The Bedtime routine section is expanded below.",
+      "checklist": [
+        {
+          "id": "check_350",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_351",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_352",
+          "label": "Add 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_353",
+          "label": "Resume now",
+          "explored": true
+        },
+        {
+          "id": "check_354",
+          "label": "Collapse the card Bedtime routine",
+          "explored": true
+        },
+        {
+          "id": "check_355",
+          "label": "Use a schedule",
+          "explored": false
+        },
+        {
+          "id": "check_356",
+          "label": "Start time selection",
+          "explored": true
+        },
+        {
+          "id": "check_357",
+          "label": "End time selection",
+          "explored": true
+        },
+        {
+          "id": "check_358",
+          "label": "Sunday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_359",
+          "label": "Monday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_360",
+          "label": "Tuesday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_361",
+          "label": "Wednesday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_362",
+          "label": "Thursday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_363",
+          "label": "Friday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_364",
+          "label": "Saturday toggle",
+          "explored": true
+        },
+        {
+          "id": "check_365",
+          "label": "Turn on while charging",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_44",
+      "summary": "Bedtime mode screen when paused, showing 'Add 30 min' and 'Resume now' buttons. The Bedtime routine section is collapsed.",
+      "checklist": [
+        {
+          "id": "check_366",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_367",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_368",
+          "label": "Add 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_369",
+          "label": "Resume now",
+          "explored": true
+        },
+        {
+          "id": "check_370",
+          "label": "Expand the card Bedtime routine",
+          "explored": true
+        },
+        {
+          "id": "check_371",
+          "label": "Customize in Modes",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_45",
+      "summary": "Bedtime mode screen when paused, with 'Turn on while charging' routine selected. Shows 'Add 30 min' and 'Resume now' buttons. Routine section includes 'After' and 'Before' time selectors.",
+      "checklist": [
+        {
+          "id": "check_372",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_373",
+          "label": "More options",
+          "explored": false
+        },
+        {
+          "id": "check_374",
+          "label": "Add 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_375",
+          "label": "Resume now",
+          "explored": true
+        },
+        {
+          "id": "check_376",
+          "label": "Collapse the card Bedtime routine",
+          "explored": false
+        },
+        {
+          "id": "check_377",
+          "label": "Use a schedule radio button",
+          "explored": true
+        },
+        {
+          "id": "check_378",
+          "label": "After time selection",
+          "explored": true
+        },
+        {
+          "id": "check_379",
+          "label": "Before time selection",
+          "explored": true
+        },
+        {
+          "id": "check_380",
+          "label": "None radio button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_46",
+      "summary": "Time picker dialog for setting the 'Before' time in Bedtime mode routine.",
+      "checklist": [
+        {
+          "id": "check_381",
+          "label": "Hour input",
+          "explored": false
+        },
+        {
+          "id": "check_382",
+          "label": "Minute input",
+          "explored": false
+        },
+        {
+          "id": "check_383",
+          "label": "AM selector",
+          "explored": false
+        },
+        {
+          "id": "check_384",
+          "label": "PM selector",
+          "explored": false
+        },
+        {
+          "id": "check_385",
+          "label": "Switch to clock mode button",
+          "explored": false
+        },
+        {
+          "id": "check_386",
+          "label": "Cancel button",
+          "explored": false
+        },
+        {
+          "id": "check_387",
+          "label": "OK button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_47",
+      "summary": "Active Bedtime mode screen with 'Turn on while charging' selected in the expanded Bedtime routine section. Features 'Turn off for now' and 'Pause for 30 min' buttons, and 'After' and 'Before' time range selectors.",
+      "checklist": [
+        {
+          "id": "check_388",
+          "label": "Turn off for now",
+          "explored": true
+        },
+        {
+          "id": "check_389",
+          "label": "Pause for 30 min",
+          "explored": true
+        },
+        {
+          "id": "check_390",
+          "label": "Collapse the card Bedtime routine",
+          "explored": false
+        },
+        {
+          "id": "check_391",
+          "label": "Use a schedule radio button",
+          "explored": false
+        },
+        {
+          "id": "check_392",
+          "label": "After time selection",
+          "explored": true
+        },
+        {
+          "id": "check_393",
+          "label": "Before time selection",
+          "explored": true
+        },
+        {
+          "id": "check_394",
+          "label": "None radio button",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_48",
+      "summary": "Wake-up configuration bottom sheet with time selection, alarm toggle, and day of week selection.",
+      "checklist": [
+        {
+          "id": "check_395",
+          "label": "Wake-up time selection",
+          "explored": true
+        },
+        {
+          "id": "check_396",
+          "label": "Wake-up alarm toggle",
+          "explored": true
+        },
+        {
+          "id": "check_397",
+          "label": "Sunday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_398",
+          "label": "Monday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_399",
+          "label": "Tuesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_400",
+          "label": "Wednesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_401",
+          "label": "Thursday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_402",
+          "label": "Friday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_403",
+          "label": "Saturday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_404",
+          "label": "Touch outside to dismiss",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_49",
+      "summary": "Expanded Wake-up configuration bottom sheet with alarm enabled, showing additional options for Sunrise Alarm, Sound, Vibrate, and Google Assistant Routine.",
+      "checklist": [
+        {
+          "id": "check_405",
+          "label": "Wake-up time selection",
+          "explored": true
+        },
+        {
+          "id": "check_406",
+          "label": "Wake-up alarm toggle",
+          "explored": true
+        },
+        {
+          "id": "check_407",
+          "label": "Sunday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_408",
+          "label": "Monday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_409",
+          "label": "Tuesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_410",
+          "label": "Wednesday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_411",
+          "label": "Thursday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_412",
+          "label": "Friday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_413",
+          "label": "Saturday checkbox",
+          "explored": true
+        },
+        {
+          "id": "check_414",
+          "label": "Sunrise Alarm toggle",
+          "explored": true
+        },
+        {
+          "id": "check_415",
+          "label": "Sound selection",
+          "explored": true
+        },
+        {
+          "id": "check_416",
+          "label": "Vibrate toggle",
+          "explored": true
+        },
+        {
+          "id": "check_417",
+          "label": "Google Assistant Routine (disabled)",
+          "explored": true
+        },
+        {
+          "id": "check_418",
+          "label": "Touch outside to dismiss",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_50",
+      "summary": "Alarm sound selection screen for the Bedtime wake-up alarm, featuring a list of device sounds and an 'Add new' option. No tabs for music services are present.",
+      "checklist": [
+        {
+          "id": "check_419",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_420",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_421",
+          "label": "Add new (disabled)",
+          "explored": false
+        },
+        {
+          "id": "check_422",
+          "label": "Silent",
+          "explored": true
+        },
+        {
+          "id": "check_423",
+          "label": "Default (Cesium)",
+          "explored": true
+        },
+        {
+          "id": "check_424",
+          "label": "Argon",
+          "explored": true
+        },
+        {
+          "id": "check_425",
+          "label": "Barium",
+          "explored": true
+        },
+        {
+          "id": "check_426",
+          "label": "BeeBeep Alarm",
+          "explored": true
+        },
+        {
+          "id": "check_427",
+          "label": "Beep-Beep-Beep Alarm",
+          "explored": true
+        },
+        {
+          "id": "check_428",
+          "label": "Buzzer Alarm",
+          "explored": true
+        },
+        {
+          "id": "check_429",
+          "label": "Carbon",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_51",
+      "summary": "More options menu for the Bedtime alarm sound selection screen, featuring options to show music services or install streaming apps.",
+      "checklist": [
+        {
+          "id": "check_430",
+          "label": "Show YouTube Music",
+          "explored": true
+        },
+        {
+          "id": "check_431",
+          "label": "Install Pandora",
+          "explored": false
+        },
+        {
+          "id": "check_432",
+          "label": "Install Spotify",
+          "explored": false
+        },
+        {
+          "id": "check_433",
+          "label": "Install Calm",
+          "explored": false
+        },
+        {
+          "id": "check_434",
+          "label": "Send feedback",
+          "explored": false
+        },
+        {
+          "id": "check_435",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_52",
+      "summary": "Alarm sound selection screen for the Bedtime wake-up alarm, now showing both 'Sounds' and 'YouTube Music' tabs. The 'YouTube Music' tab is currently active, displaying a login prompt.",
+      "checklist": [
+        {
+          "id": "check_436",
+          "label": "Navigate up",
+          "explored": false
+        },
+        {
+          "id": "check_437",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_438",
+          "label": "Sounds tab",
+          "explored": false
+        },
+        {
+          "id": "check_439",
+          "label": "Hide tab",
+          "explored": false
+        },
+        {
+          "id": "check_440",
+          "label": "Log in",
+          "explored": false
+        }
+      ]
+    },
+    {
+      "id": "view_53",
+      "summary": "More options menu for the Bedtime alarm sound selection screen, showing options to hide the music tab or install other music apps.",
+      "checklist": [
+        {
+          "id": "check_441",
+          "label": "Hide YouTube Music",
+          "explored": true
+        },
+        {
+          "id": "check_442",
+          "label": "Install Pandora",
+          "explored": false
+        },
+        {
+          "id": "check_443",
+          "label": "Install Spotify",
+          "explored": false
+        },
+        {
+          "id": "check_444",
+          "label": "Install Calm",
+          "explored": false
+        },
+        {
+          "id": "check_445",
+          "label": "Send feedback",
+          "explored": false
+        },
+        {
+          "id": "check_446",
+          "label": "Help (disabled)",
+          "explored": false
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "view_0",
+      "to": "view_1",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_1",
+      "to": "view_2",
+      "action": "Tapped 'Settings'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_3",
+      "action": "Tapped 'Clock Style'"
+    },
+    {
+      "from": "view_3",
+      "to": "view_2",
+      "action": "Tapped 'Digital style option'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_4",
+      "action": "Tapped 'More options' in Settings"
+    },
+    {
+      "from": "view_2",
+      "to": "view_5",
+      "action": "Tapped 'Silence after'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_6",
+      "action": "Tapped 'Snooze length'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_0",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_0",
+      "to": "view_7",
+      "action": "Expanded 3:00 AM alarm"
+    },
+    {
+      "from": "view_7",
+      "to": "view_8",
+      "action": "Tapped 'Add label'"
+    },
+    {
+      "from": "view_8",
+      "to": "view_7",
+      "action": "Tapped 'Cancel'"
+    },
+    {
+      "from": "view_7",
+      "to": "view_9",
+      "action": "Tapped 'Alarm time'"
+    },
+    {
+      "from": "view_9",
+      "to": "view_10",
+      "action": "Tapped 'Switch to clock mode button'"
+    },
+    {
+      "from": "view_10",
+      "to": "view_9",
+      "action": "Tapped 'Switch to text input mode button'"
+    },
+    {
+      "from": "view_7",
+      "to": "view_11",
+      "action": "Tapped 'Ringtone selection'"
+    },
+    {
+      "from": "view_11",
+      "to": "view_12",
+      "action": "Tapped 'More options' on Alarm sound screen"
+    },
+    {
+      "from": "view_11",
+      "to": "view_7",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_7",
+      "to": "view_13",
+      "action": "Tapped 'Schedule alarm'"
+    },
+    {
+      "from": "view_13",
+      "to": "view_7",
+      "action": "Tapped 'Cancel'"
+    },
+    {
+      "from": "view_0",
+      "to": "view_9",
+      "action": "Tapped 'Add alarm button'"
+    },
+    {
+      "from": "view_9",
+      "to": "view_7",
+      "action": "Tapped 'OK'"
+    },
+    {
+      "from": "view_7",
+      "to": "view_0",
+      "action": "Tapped 'Delete'"
+    },
+    {
+      "from": "view_0",
+      "to": "view_14",
+      "action": "Tapped 'Clock' tab"
+    },
+    {
+      "from": "view_14",
+      "to": "view_1",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_14",
+      "to": "view_15",
+      "action": "Tapped 'Add city' button"
+    },
+    {
+      "from": "view_14",
+      "to": "view_0",
+      "action": "Tapped 'Alarm' tab"
+    },
+    {
+      "from": "view_0",
+      "to": "view_16",
+      "action": "Tapped 'Timer' tab"
+    },
+    {
+      "from": "view_16",
+      "to": "view_1",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_16",
+      "to": "view_17",
+      "action": "Tapped 'Start'"
+    },
+    {
+      "from": "view_17",
+      "to": "view_18",
+      "action": "Tapped 'Pause'"
+    },
+    {
+      "from": "view_18",
+      "to": "view_16",
+      "action": "Tapped 'Delete timer'"
+    },
+    {
+      "from": "view_16",
+      "to": "view_19",
+      "action": "Tapped 'Stopwatch' tab"
+    },
+    {
+      "from": "view_19",
+      "to": "view_1",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_20",
+      "action": "Enabled 'Automatic home clock'"
+    },
+    {
+      "from": "view_20",
+      "to": "view_21",
+      "action": "Tapped 'Home time zone' selection"
+    },
+    {
+      "from": "view_20",
+      "to": "view_0",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_19",
+      "to": "view_22",
+      "action": "Tapped 'Start' stopwatch"
+    },
+    {
+      "from": "view_22",
+      "to": "view_23",
+      "action": "Tapped 'Pause' stopwatch"
+    },
+    {
+      "from": "view_23",
+      "to": "view_19",
+      "action": "Tapped 'Reset' stopwatch"
+    },
+    {
+      "from": "view_19",
+      "to": "view_24",
+      "action": "Tapped 'Bedtime' tab"
+    },
+    {
+      "from": "view_24",
+      "to": "view_25",
+      "action": "Tapped 'More options' on Bedtime screen"
+    },
+    {
+      "from": "view_25",
+      "to": "view_26",
+      "action": "Tapped 'Show recent activity' from More options menu"
+    },
+    {
+      "from": "view_26",
+      "to": "view_24",
+      "action": "Tapped 'No thanks' on recent activity card"
+    },
+    {
+      "from": "view_24",
+      "to": "view_27",
+      "action": "Tapped '11:00 PM — Bedtime 11:00 PM' to configure bedtime"
+    },
+    {
+      "from": "view_27",
+      "to": "view_9",
+      "action": "Tapped 'Bedtime time selection'"
+    },
+    {
+      "from": "view_27",
+      "to": "view_28",
+      "action": "Toggled 'Bedtime schedule' off"
+    },
+    {
+      "from": "view_27",
+      "to": "view_29",
+      "action": "Tapped 'Reminder notification · 15 minutes before bedtime'"
+    },
+    {
+      "from": "view_29",
+      "to": "view_27",
+      "action": "Tapped 'Cancel'"
+    },
+    {
+      "from": "view_27",
+      "to": "view_30",
+      "action": "Tapped 'Bedtime mode' settings"
+    },
+    {
+      "from": "view_30",
+      "to": "view_31",
+      "action": "Tapped 'More options' on Bedtime mode screen"
+    },
+    {
+      "from": "view_32",
+      "to": "view_30",
+      "action": "Tapped 'Collapse the card Bedtime routine'"
+    },
+    {
+      "from": "view_30",
+      "to": "view_32",
+      "action": "Tapped 'Expand the card Bedtime routine'"
+    },
+    {
+      "from": "view_32",
+      "to": "view_33",
+      "action": "Tapped 'Turn on while charging'"
+    },
+    {
+      "from": "view_33",
+      "to": "view_34",
+      "action": "Tapped 'None' radio button"
+    },
+    {
+      "from": "view_34",
+      "to": "view_35",
+      "action": "Tapped 'Collapse the card Bedtime routine'"
+    },
+    {
+      "from": "view_35",
+      "to": "view_31",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_31",
+      "to": "view_36",
+      "action": "Tapped 'Manage your data'"
+    },
+    {
+      "from": "view_36",
+      "to": "view_37",
+      "action": "Tapped 'More options' on Manage your data screen"
+    },
+    {
+      "from": "view_36",
+      "to": "view_38",
+      "action": "Tapped 'Daily device usage' toggle"
+    },
+    {
+      "from": "view_36",
+      "to": "view_39",
+      "action": "Tapped 'Bedtime sensor data' toggle"
+    },
+    {
+      "from": "view_36",
+      "to": "view_40",
+      "action": "Tapped 'Time zone history' toggle"
+    },
+    {
+      "from": "view_40",
+      "to": "view_36",
+      "action": "Tapped 'Turn off'"
+    },
+    {
+      "from": "view_36",
+      "to": "view_35",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_35",
+      "to": "view_41",
+      "action": "Tapped 'Turn on now'"
+    },
+    {
+      "from": "view_41",
+      "to": "view_35",
+      "action": "Tapped 'Turn off for now'"
+    },
+    {
+      "from": "view_34",
+      "to": "view_32",
+      "action": "Tapped 'Use a schedule'"
+    },
+    {
+      "from": "view_43",
+      "to": "view_42",
+      "action": "Tapped 'Resume now'"
+    },
+    {
+      "from": "view_42",
+      "to": "view_41",
+      "action": "Tapped 'Collapse the card Bedtime routine'"
+    },
+    {
+      "from": "view_41",
+      "to": "view_44",
+      "action": "Tapped 'Pause for 30 min'"
+    },
+    {
+      "from": "view_44",
+      "to": "view_41",
+      "action": "Tapped 'Resume now'"
+    },
+    {
+      "from": "view_42",
+      "to": "view_43",
+      "action": "Tapped 'Pause for 30 min'"
+    },
+    {
+      "from": "view_43",
+      "to": "view_45",
+      "action": "Tapped 'Turn on while charging'"
+    },
+    {
+      "from": "view_45",
+      "to": "view_46",
+      "action": "Tapped 'Before · 7:00 AM'"
+    },
+    {
+      "from": "view_45",
+      "to": "view_47",
+      "action": "Tapped 'Resume now'"
+    },
+    {
+      "from": "view_47",
+      "to": "view_41",
+      "action": "Tapped 'Collapse the card Bedtime routine'"
+    },
+    {
+      "from": "view_47",
+      "to": "view_33",
+      "action": "Tapped 'Turn off for now'"
+    },
+    {
+      "from": "view_45",
+      "to": "view_43",
+      "action": "Tapped 'Use a schedule' radio button"
+    },
+    {
+      "from": "view_43",
+      "to": "view_27",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_24",
+      "to": "view_48",
+      "action": "Tapped 'Wake-up time selection'"
+    },
+    {
+      "from": "view_48",
+      "to": "view_9",
+      "action": "Tapped 'Wake-up time selection'"
+    },
+    {
+      "from": "view_48",
+      "to": "view_49",
+      "action": "Toggled 'Wake-up alarm' on"
+    },
+    {
+      "from": "view_49",
+      "to": "view_50",
+      "action": "Tapped 'Sound selection'"
+    },
+    {
+      "from": "view_50",
+      "to": "view_51",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_51",
+      "to": "view_52",
+      "action": "Tapped 'Show YouTube Music'"
+    },
+    {
+      "from": "view_52",
+      "to": "view_53",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_53",
+      "to": "view_50",
+      "action": "Tapped 'Hide YouTube Music'"
+    },
+    {
+      "from": "view_50",
+      "to": "view_49",
+      "action": "Tapped 'Navigate up'"
+    },
+    {
+      "from": "view_49",
+      "to": "view_9",
+      "action": "Tapped 'Wake-up time selection'"
+    },
+    {
+      "from": "view_9",
+      "to": "view_49",
+      "action": "Tapped 'Cancel'"
+    },
+    {
+      "from": "view_48",
+      "to": "view_24",
+      "action": "Tapped 'touch_outside' to dismiss"
+    },
+    {
+      "from": "view_9",
+      "to": "view_48",
+      "action": "Tapped 'OK'"
+    },
+    {
+      "from": "view_49",
+      "to": "view_24",
+      "action": "Tapped 'touch_outside' to dismiss wake-up settings"
+    },
+    {
+      "from": "view_49",
+      "to": "view_48",
+      "action": "Toggled 'Wake-up alarm' off"
+    },
+    {
+      "from": "view_10",
+      "to": "view_48",
+      "action": "Tapped OK on time picker"
+    }
+  ]
+}

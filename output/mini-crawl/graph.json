@@ -1,0 +1,210 @@
+{
+  "nodes": [
+    {
+      "id": "view_0",
+      "summary": "Clock main screen with digital time display and 'Add city' FAB.",
+      "checklist": [
+        {
+          "id": "check_0",
+          "label": "More options",
+          "explored": true
+        },
+        {
+          "id": "check_1",
+          "label": "Add city",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_1",
+      "summary": "Overflow menu with options: Screen saver, Settings, Privacy policy, Send feedback, Help.",
+      "checklist": [
+        {
+          "id": "check_2",
+          "label": "Settings",
+          "explored": true
+        },
+        {
+          "id": "check_3",
+          "label": "Privacy policy",
+          "explored": true
+        },
+        {
+          "id": "check_4",
+          "label": "Send feedback",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_2",
+      "summary": "Settings screen with sections for Clock, Alarms, and Timers. Includes options for clock style, home time zone, silence duration, and snooze length.",
+      "checklist": [
+        {
+          "id": "check_5",
+          "label": "Navigate up",
+          "explored": true
+        },
+        {
+          "id": "check_6",
+          "label": "Style",
+          "explored": true
+        },
+        {
+          "id": "check_7",
+          "label": "Home time zone",
+          "explored": true
+        },
+        {
+          "id": "check_8",
+          "label": "Change date & time",
+          "explored": true
+        },
+        {
+          "id": "check_9",
+          "label": "Silence after",
+          "explored": true
+        },
+        {
+          "id": "check_10",
+          "label": "Snooze length",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_3",
+      "summary": "Clock style selection menu with Digital and Analog options.",
+      "checklist": [
+        {
+          "id": "check_11",
+          "label": "Digital style",
+          "explored": true
+        },
+        {
+          "id": "check_12",
+          "label": "Analog style",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_4",
+      "summary": "Home time zone selection dialog with a list of GMT offsets and city names, and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_13",
+          "label": "Select time zone",
+          "explored": true
+        },
+        {
+          "id": "check_14",
+          "label": "Cancel",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_5",
+      "summary": "'Silence after' selection dialog with a list of time durations (1 to 25 minutes, and Never) and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_15",
+          "label": "1 minute",
+          "explored": true
+        },
+        {
+          "id": "check_16",
+          "label": "Cancel",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_6",
+      "summary": "'Snooze length' selection dialog with a list of durations from 1 to 30 minutes, and a Cancel button.",
+      "checklist": [
+        {
+          "id": "check_17",
+          "label": "1 minute",
+          "explored": true
+        },
+        {
+          "id": "check_18",
+          "label": "Cancel",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_7",
+      "summary": "City search screen with a back button and search input bar at the top.",
+      "checklist": [
+        {
+          "id": "check_19",
+          "label": "Back",
+          "explored": true
+        }
+      ]
+    },
+    {
+      "id": "view_8",
+      "summary": "Overflow menu on the Settings screen with options for 'Send feedback' and 'Help'",
+      "checklist": [
+        {
+          "id": "check_20",
+          "label": "Send feedback",
+          "explored": true
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "view_0",
+      "to": "view_1",
+      "action": "Tapped 'More options'"
+    },
+    {
+      "from": "view_1",
+      "to": "view_2",
+      "action": "Tapped 'Settings'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_3",
+      "action": "Tapped 'Style'"
+    },
+    {
+      "from": "view_3",
+      "to": "view_2",
+      "action": "Tapped 'Analog style'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_4",
+      "action": "Tapped 'Home time zone'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_5",
+      "action": "Tapped 'Silence after'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_6",
+      "action": "Tapped 'Snooze length'"
+    },
+    {
+      "from": "view_0",
+      "to": "view_7",
+      "action": "Tapped 'Add city'"
+    },
+    {
+      "from": "view_2",
+      "to": "view_8",
+      "action": "Tapped 'More options' in Settings"
+    }
+  ]
+}
