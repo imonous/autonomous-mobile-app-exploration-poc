@@ -150,14 +150,14 @@ export async function explore({
       totalThinkingTokens += thinkingTokens;
 
       if (result.reasoningText) {
-        console.log(`\x1b[2m${result.reasoningText}\x1b[0m`);
+        console.log(`\n\x1b[2m${result.reasoningText.trim()}\x1b[0m`);
       }
-      if (result.text) console.log(result.text);
+      if (result.text) console.log(result.text.trim());
 
       for (const s of result.steps) {
         if (s.toolCalls.length > 0) {
           const formatted = s.toolCalls
-            .map((tc) => `${tc.toolName}(${JSON.stringify(tc.input)})`)
+            .map((tc) => `${tc.toolName}(${JSON.stringify(tc.input, null, 2)})`)
             .join(", ");
           console.log(formatted);
         }
