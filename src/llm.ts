@@ -1,4 +1,5 @@
 import { tool } from "ai";
+import dedent from "dedent";
 import { z } from "zod/v4";
 import { addNode, addEdge, addChecklistElements, markExplored, type Graph } from "./graph.js";
 
@@ -42,12 +43,16 @@ export function createTools(graph: Graph) {
               "(e.g. 'Stopwatch screen with circular time display and start button' " +
               "NOT 'Stopwatch screen with 00:00.00 display').",
           ),
-        checklist: z
-          .array(z.string())
-          .min(1)
-          .describe(
-            "Interactive elements to explore on this view. Only include elements currently visible on screen — the explorer cannot scroll. Use structural labels, not runtime values.",
-          ),
+        checklist: z.array(z.string()).min(1).describe(dedent`
+            Your exploration plan for this view.
+
+            Only add elements that could navigate to a new view, and only if they are
+            currently visible on screen — you cannot reach elements that are not visible.
+
+            Skip elements that just change values in place (toggles, sliders, text
+            inputs). If several elements are structurally identical (e.g. a dropdown
+            with "1 min", "2 min", "3 min"), one entry is enough.
+          `),
         from: z.string().optional().describe("Source node ID if navigated here from another view"),
         action: z
           .string()
