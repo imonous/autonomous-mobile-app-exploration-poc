@@ -143,10 +143,10 @@ export function formatElementList(
 ): string {
   return elements
     .map((el, i) => {
-      const disabled = excludeLabels?.some((ex) => el.label.includes(ex));
-      const suffix = disabled ? " (disabled)" : "";
-      return `[${String(i)}] "${el.label}"${suffix} [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`;
+      if (excludeLabels?.some((ex) => el.label.includes(ex))) return null;
+      return `[${String(i)}] "${el.label}" [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`;
     })
+    .filter(Boolean)
     .join("\n");
 }
 

@@ -176,19 +176,14 @@ export async function explore({
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      // Execute tap actions (skip disabled elements)
+      // Execute tap actions
       let tapped = false;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
             const args = tc.input as { elementIndex: number };
-            const isDisabled = excludeElements?.some((ex) =>
-              elements[args.elementIndex]?.label.includes(ex),
-            );
-            if (!isDisabled) {
-              await tapElement(browser, elements, args.elementIndex);
-              tapped = true;
-            }
+            await tapElement(browser, elements, args.elementIndex);
+            tapped = true;
           }
         }
       }
