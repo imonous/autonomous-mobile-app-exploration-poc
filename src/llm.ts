@@ -133,6 +133,7 @@ Before calling addNode, review every existing node in the graph. If the current 
 2. Screenshots from older turns are truncated.
 3. addNode already records the incoming edge — only use addEdge for edges between existing nodes.
 4. When you navigate back to an already-known view, use addEdge to record the backward transition.
+5. Elements marked (disabled) cannot be tapped. Mark their checklist entry as explored and move on.
 
 ## Checklist 
 Exploration ends automatically when every checklist element is marked explored.

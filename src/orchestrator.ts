@@ -40,7 +40,7 @@ export async function explore({
   let prevResponseMessages: ModelMessage[] | null = null;
   let [screenshot, elements] = await Promise.all([
     takeScreenshot(browser),
-    getInteractiveElements(browser, excludeElements),
+    getInteractiveElements(browser),
   ]);
 
   await rm("output", { recursive: true, force: true });
@@ -52,7 +52,7 @@ export async function explore({
     while (step < maxSteps) {
       console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
 
-      const elementListText = formatElementList(elements);
+      const elementListText = formatElementList(elements, excludeElements);
       const prevNodeCount = graph.nodes.length;
 
       const currentText = `Current graph:\n${serialize(graph)}\n\nInteractive elements:\n${elementListText}`;
@@ -134,14 +134,19 @@ export async function explore({
       }
       await writeFile("output/graph.json", serialize(graph));
 
-      // Execute tap actions
+      // Execute tap actions (skip disabled elements)
       let tapped = false;
       for (const s of result.steps) {
         for (const tc of s.toolCalls) {
           if (tc.toolName === "tap") {
             const args = tc.input as { elementIndex: number };
-            await tapElement(browser, elements, args.elementIndex);
-            tapped = true;
+            const isDisabled = excludeElements?.some((ex) =>
+              elements[args.elementIndex]?.label.includes(ex),
+            );
+            if (!isDisabled) {
+              await tapElement(browser, elements, args.elementIndex);
+              tapped = true;
+            }
           }
         }
       }
@@ -160,7 +165,7 @@ export async function explore({
 
       [screenshot, elements] = await Promise.all([
         takeScreenshot(browser),
-        getInteractiveElements(browser, excludeElements),
+        getInteractiveElements(browser),
       ]);
       step++;
     }

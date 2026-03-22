@@ -111,7 +111,6 @@ function buildLabel(el: Element): string {
 
 export async function getInteractiveElements(
   browser: WebdriverIO.Browser,
-  excludeLabels?: string[],
 ): Promise<InteractiveElement[]> {
   const xml = await browser.getPageSource();
   const doc = new DOMParser().parseFromString(xml, "text/xml");
@@ -126,20 +125,22 @@ export async function getInteractiveElements(
     if (!bounds) continue;
     if (bounds.left === bounds.right || bounds.top === bounds.bottom) continue;
 
-    const label = buildLabel(el);
-    if (excludeLabels?.some((ex) => label.includes(ex))) continue;
-    elements.push({ label, bounds });
+    elements.push({ label: buildLabel(el), bounds });
   }
 
   return elements;
 }
 
-export function formatElementList(elements: InteractiveElement[]): string {
+export function formatElementList(
+  elements: InteractiveElement[],
+  excludeLabels?: string[],
+): string {
   return elements
-    .map(
-      (el, i) =>
-        `[${String(i)}] "${el.label}" [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`,
-    )
+    .map((el, i) => {
+      const disabled = excludeLabels?.some((ex) => el.label.includes(ex));
+      const suffix = disabled ? " (disabled)" : "";
+      return `[${String(i)}] "${el.label}"${suffix} [${String(el.bounds.left)},${String(el.bounds.top)}][${String(el.bounds.right)},${String(el.bounds.bottom)}]`;
+    })
     .join("\n");
 }
 
