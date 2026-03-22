@@ -76,6 +76,24 @@ export function allExplored(graph: Graph): boolean {
   return graph.nodes.every((n) => n.checklist.length > 0 && n.checklist.every((e) => e.explored));
 }
 
+export function printChecklist(graph: Graph): void {
+  if (graph.nodes.length === 0) return;
+
+  const allItems = graph.nodes.flatMap((n) => n.checklist);
+  const explored = allItems.filter((e) => e.explored).length;
+  console.log(`\nChecklist (${String(explored)}/${String(allItems.length)} explored):`);
+
+  for (const node of graph.nodes) {
+    if (node.checklist.length === 0) continue;
+    console.log(`  ${node.id} (${node.summary}):`);
+    for (const item of node.checklist) {
+      const prefix = item.explored ? "\x1b[2m  \u2713" : "  \u2717";
+      const suffix = item.explored ? "\x1b[0m" : "";
+      console.log(`${prefix} ${item.label}${suffix}`);
+    }
+  }
+}
+
 export function serialize(graph: Graph): string {
   return JSON.stringify({ nodes: graph.nodes, edges: graph.edges }, null, 2);
 }

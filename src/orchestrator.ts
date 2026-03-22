@@ -1,5 +1,5 @@
 import { generateText, hasToolCall, stepCountIs, type LanguageModel, type ModelMessage } from "ai";
-import { createGraph, serialize, allExplored, type Graph } from "./graph.js";
+import { createGraph, serialize, allExplored, printChecklist, type Graph } from "./graph.js";
 import {
   createSession,
   destroySession,
@@ -54,7 +54,8 @@ export async function explore({
 
   try {
     while (step < maxSteps) {
-      console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---\n`);
+      console.log(`\n--- Step ${String(step + 1)}/${String(maxSteps)} ---`);
+      printChecklist(graph);
 
       if (elements.length === 0) {
         console.log("No interactive elements found — pressing back to dismiss");

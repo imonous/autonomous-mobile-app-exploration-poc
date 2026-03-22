@@ -23,7 +23,7 @@ const model = google(modelId);
 
 /* Clock tab crawl */
 await explore({
-  maxSteps: 100,
+  maxSteps: 150,
   model,
   modelId,
   // The embedded apps for some reason don't get prevented by pin
