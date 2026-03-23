@@ -29,6 +29,7 @@ export async function createSession(appiumUrl: string): Promise<WebdriverIO.Brow
       "appium:automationName": "UiAutomator2",
       "appium:noReset": true,
       "appium:skipDeviceInitialization": true,
+      "appium:newCommandTimeout": 300,
     },
   });
 }

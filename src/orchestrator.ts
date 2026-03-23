@@ -125,29 +125,36 @@ export async function explore({
         ],
       });
 
-      const result = await generateText({
-        model,
-        system: SYSTEM_PROMPT,
-        messages,
-        tools,
-        stopWhen: [
-          ...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)),
-          hasToolCall("exit"),
-          stepCountIs(10),
-        ],
-        providerOptions: {
-          google: {
-            thinkingConfig: {
-              thinkingLevel: "high",
-              includeThoughts: true,
+      let result;
+      try {
+        result = await generateText({
+          model,
+          maxRetries: 20,
+          system: SYSTEM_PROMPT,
+          messages,
+          tools,
+          stopWhen: [
+            ...DEVICE_TOOL_NAMES.map((name) => hasToolCall(name)),
+            hasToolCall("exit"),
+            stepCountIs(10),
+          ],
+          providerOptions: {
+            google: {
+              thinkingConfig: {
+                thinkingLevel: "high",
+                includeThoughts: true,
+              },
+            },
+            anthropic: {
+              thinking: { type: "adaptive" },
+              effort: "medium",
             },
           },
-          anthropic: {
-            thinking: { type: "adaptive" },
-            effort: "high",
-          },
-        },
-      });
+        });
+      } catch (e) {
+        console.error(`\nLLM error: ${(e as Error).message}`);
+        break;
+      }
 
       const inputTokens = result.totalUsage.inputTokens ?? 0;
       const thinkingTokens = result.totalUsage.outputTokenDetails.reasoningTokens ?? 0;
@@ -219,8 +226,14 @@ export async function explore({
     }
 
     if (step >= maxSteps) console.log("--- Reached max steps limit ---");
+  } catch (e) {
+    console.error(`\nFatal error: ${(e as Error).message}`);
   } finally {
-    await destroySession(browser);
+    try {
+      await destroySession(browser);
+    } catch {
+      // Session already gone
+    }
   }
 
   console.log(`Graph saved to output/graph.json`);

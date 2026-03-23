@@ -23,7 +23,7 @@ export interface Pricing {
 
 export const MODEL_PRICING: Record<string, Pricing> = {
   "gemini-3-flash-preview": { inputPerMToken: 0.5, outputPerMToken: 3.0, thinkingPerMToken: 3.0 },
-  "claude-sonnet-4-6-20260217": {
+  "claude-sonnet-4-6": {
     inputPerMToken: 3.0,
     outputPerMToken: 15.0,
     thinkingPerMToken: 15.0,
@@ -168,4 +168,6 @@ Exploration ends automatically when every checklist element is marked explored.
 If a checklist element is no longer viable, you may discard it by marking as explored.
 
 ## Strategy
-Exhaust the current view first (depth-first). Check off every unchecked checklist element for the current view before navigating away. Leaving with unchecked items means backtracking later, wasting taps.`;
+Work depth-first. For each view, work through its checklist elements one at a time. When a tap opens a new view, register it (addNode) and fully explore it before returning to the previous view to continue with its remaining checklist items.
+
+Do not be lazy. Never navigate away from a view that still has unchecked checklist elements. Going back with unfinished items is the single worst thing you can do — it wastes taps and forces expensive backtracking. Be thorough: exhaust every checklist element on the current view before moving on.`;
