@@ -1,50 +1,62 @@
-# Autonomous Mobile App Exploration
+## Autonomous Mobile App Exploration
 
-PoC: an LLM autonomously explores an Android app via Appium and builds a graph of screens and transitions.
+Give an LLM an Android app. It explores autonomously via Appium and builds a graph of every screen and transition it finds.
 
-Built as a PoC for the [bunq Software Project 2025-2026 Q4](docs/project-desc-past-poc.md).
+Test app: Google Clock (pre-installed, no auth). Surprisingly complex for a full crawl (100+ views).
 
-## Demo
+### Mini crawl demo
 
-Test app: Google Clock (preinstalled on emulators, no auth, ~200 distinct views).
+Scoped to one tab (others disabled). Gemini 3.0 flash high reasoning (mid-range model), $0.60, 5 minutes. Builds a perfect graph.
 
-### Clock tab (~80 steps)
+![demo](docs/tab-crawl-compressed.gif)
 
-Scoped to one tab (other tabs disabled). Builds a near-complete map in under 100 steps.
+*[Video: real-time recording](https://youtu.be/KgohvA_Lyvg)*
 
-<!-- TODO: replace with gif -->
-![demo](TODO)
+*[Interactive graph: explore the graph yourself](https://imonous.github.io/autonomous-mobile-app-exploration-poc/src/visualizer.html?run=mini-crawl)*
 
-[Full video](TODO) · [Interactive graph](TODO)
+### Full crawl demo
 
-### Full app (~300 steps)
+All tabs, same model. Works well for ~50 steps, then degrades significantly (solvable past PoC, we're confident the architecture scales).
 
-Earlier run crawling all tabs. Works well for ~100 steps, then starts revisiting known screens.
+<img src="docs/full-crawl.png" width="600">
 
-[Interactive graph](TODO)
+*[Interactive graph: explore the graph yourself](https://imonous.github.io/autonomous-mobile-app-exploration-poc/src/visualizer.html?run=full-crawl)*
 
-## How it works
+### How it works
 
-Each step the LLM sees a screenshot and a list of tappable elements. It decides whether this is a new screen or one it's already visited, updates the graph, and picks what to tap next.
+Key idea: the graph serves as both memory for the LLM and the output that it builds in real-time.
 
-### The graph
+However, a naive solution still resulted in failure to even crawl a single tab. Things that unlocked it:
+- A checklist: the LLM keeps a list of things it's done and still has to do
+- Variably compressed history: older history gets truncated more aggressively
 
-The graph is the LLM's memory of what it has explored. It's built in real-time, one step at a time.
+---
 
-- **Nodes** = screens (pages, modals, menus, bottom sheets).
-  Each node stores a short description of the screen's layout and structure.
-- **Edges** = transitions between screens.
-  Each edge is labeled with the action that caused it (e.g. "Tapped 'Settings'").
+### Setup
 
-The full graph is sent to the LLM every step, so it always knows what it's already mapped.
+Node >=22, pnpm, Android emulator or device.
 
-### The checklist
+```bash
+pnpm i  # approve build scripts when prompted
+pnpm exec appium driver install uiautomator2
+```
 
-When the LLM registers a new screen, it lists the elements that might lead somewhere new. As it taps through them, it marks them explored. Exploration ends when every item is covered.
+`.env`:
+```
+GOOGLE_GENERATIVE_AI_API_KEY=...
+```
 
-## Limitations
+Before starting: open Google Clock, navigate to the "Clock" tab, and pin the app. To try a different app and change crawler settings, modify `src/index.ts`.
 
-- Tap only — no scroll, swipe, long-press, or back
-- No login or user-state handling
-- Degrades past ~100 steps (starts duplicating screens)
-- Google Clock is likely in the model's training data
+```bash
+# terminal 1
+pnpm exec appium --relaxed-security
+
+# terminal 2 (optional): live visualizer
+npx serve . # open http://localhost:3000/src/visualizer?live
+
+# terminal 3
+pnpm start
+```
+
+
